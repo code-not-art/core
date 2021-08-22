@@ -1,0 +1,41 @@
+{
+  "name": "core",
+  "version": "1.0.0",
+  "description": "HTML 5 Canvas Drawing Library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/code-not-art/core.git"
+  },
+  "keywords": [
+    "canvas",
+    "generative",
+    "art",
+    "html5\u001b[D\u001b[D\u001b[C\u001b[C\u001b[",
+    "makecodenotart",
+    "code-not-art"
+  ],
+  "author": "Jon Eubank <joneubank@gmail.com>",
+  "license": "GPLV3",
+  "bugs": {
+    "url": "https://github.com/code-not-art/core/issues"
+  },
+  "homepage": "https://github.com/code-not-art/core#readme",
+  "devDependencies": {
+    "@types/node": "^16.7.1",
+    "@types/seed-random": "^2.2.1",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "seed-random": "^2.2.0"
+  },
+  "prettier": {
+    "trailingComma": "all",
+    "singleQuote": true,
+    "arrowFunctionParentheses": "always"
+  }
+}
