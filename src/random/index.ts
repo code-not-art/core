@@ -8,10 +8,13 @@ type Context = {
   rng: () => number;
 };
 
-function Random(context: string, seed?: string) {
-  const _contexts: Context[] = [createContext(context, seed)];
+class Random {
+  _contexts: Context[] = [];
+  constructor(context: string, seed?: string) {
+    this._contexts.push(this.createContext(context, seed));
+  }
 
-  function createContext(context: string, seed?: string) {
+  createContext(context: string, seed?: string) {
     const _seed = `${seed || Math.random()}`;
     return { context, count: 0, seed: _seed, rng: srng(_seed) };
   }
@@ -21,86 +24,83 @@ function Random(context: string, seed?: string) {
    *** */
 
   // Get Data about current active context
-  function getContext(): Context {
-    return _contexts[_contexts.length - 1];
+  getContext(): Context {
+    return this._contexts[this._contexts.length - 1];
   }
-  function getCount(): number {
-    return getContext().count;
+  getCount(): number {
+    return this.getContext().count;
   }
-  function getSeed(): string {
-    return getContext().seed;
-  }
-
-  function getContextByLabel(context: string): Context | undefined {
-    return _contexts.find((i) => i.context === context);
-  }
-  function getCountByLabel(context: string) {
-    return getContextByLabel(context)?.count;
-  }
-  function getSeedByLabel(context: string) {
-    return getContextByLabel(context)?.seed;
-  }
-  function getContexts() {
-    return _contexts;
+  getSeed(): string {
+    return this.getContext().seed;
   }
 
-  function push(context: string, seed?: string) {
-    _contexts.push(createContext(context, seed));
+  getContextByLabel(context: string): Context | undefined {
+    return this._contexts.find((i) => i.context === context);
+  }
+  getCountByLabel(context: string) {
+    return this.getContextByLabel(context)?.count;
+  }
+  getSeedByLabel(context: string) {
+    return this.getContextByLabel(context)?.seed;
+  }
+  getContexts() {
+    return this._contexts;
   }
 
-  function pop() {
-    _contexts.pop();
+  push(context: string, seed?: string) {
+    this._contexts.push(this.createContext(context, seed));
+  }
+
+  pop() {
+    this._contexts.pop();
   }
 
   /* ***
    * Do Random Stuff
    *** */
 
-  function next(): number {
-    const _context = getContext();
+  next(): number {
+    const _context = this.getContext();
     _context.count++;
     return _context.rng();
   }
 
-  function bool(chance: number = 0.5): boolean {
-    return next() <= chance;
+  bool(chance: number = 0.5): boolean {
+    return this.next() <= chance;
   }
 
-  function int(min: number, max: number): number {
-    return Math.floor(next() * (max - min + 1) + min);
+  int(min: number, max: number): number {
+    return Math.floor(this.next() * (max - min + 1) + min);
   }
 
-  function float(min: number, max: number): number {
-    return next() * (max - min + 1) + min;
+  float(min: number, max: number): number {
+    return this.next() * (max - min + 1) + min;
   }
 
-  function fuzzy(base: number) {
+  fuzzy(base: number) {
     return {
-      int: (range: number): number => Math.round(int(-range, range) + base),
-      float: (range: number): number => float(-range, range) + base,
+      int: (range: number): number =>
+        Math.round(this.int(-range, range) + base),
+      float: (range: number): number => this.float(-range, range) + base,
     };
   }
 
-  function chooseOne<T>(items: T[]): T {
-    return items[int(0, items.length - 1)];
+  chooseOne<T>(items: T[]): T {
+    return items[this.int(0, items.length - 1)];
   }
 
-  function choose<T>(
-    items: T[],
-    count: number,
-    allowDuplicates: boolean = true,
-  ): T[] {
+  choose<T>(items: T[], count: number, allowDuplicates: boolean = true): T[] {
     const output: T[] = [];
     if (allowDuplicates) {
       repeat(count, () => {
-        output.push(chooseOne(items));
+        output.push(this.chooseOne(items));
       });
     } else {
       // No Duplicates version
       const _count = count > items.length ? items.length : count;
       let options = array(_count);
       repeat(_count, () => {
-        const selection = int(0, options.length);
+        const selection = this.int(0, options.length);
         output.push(items[selection]);
         // Remove selection from options list
         options = options
@@ -111,39 +111,16 @@ function Random(context: string, seed?: string) {
     return output;
   }
 
-  function shuffle<T>(items: T[]): T[] {
+  shuffle<T>(items: T[]): T[] {
     const output = items.map((i) => i);
     repeat(output.length, (i) => {
-      const swap = int(i, output.length - 1);
+      const swap = this.int(i, output.length - 1);
       const temp = output[i];
       output[i] = output[swap];
       output[swap] = temp;
     });
     return output;
   }
-
-  return {
-    getContext,
-    getCount,
-    getSeed,
-    getContextByLabel,
-    getCountByLabel,
-    getSeedByLabel,
-    getContexts,
-    push,
-    pop,
-
-    next,
-    bool,
-    int,
-    float,
-    fuzzy,
-
-    shuffle,
-
-    choose,
-    chooseOne,
-  };
 }
 
 export default Random;
