@@ -19,7 +19,7 @@
     "code-not-art"
   ],
   "author": "Jon Eubank <joneubank@gmail.com>",
-  "license": "GPLV3",
+  "license": "GPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/code-not-art/core/issues"
   },
@@ -27,11 +27,13 @@
   "devDependencies": {
     "@types/node": "^16.7.1",
     "@types/seed-random": "^2.2.1",
+    "@types/tinycolor2": "^1.4.3",
     "ts-node": "^10.2.1",
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "seed-random": "^2.2.0"
+    "seed-random": "^2.2.0",
+    "tinycolor2": "^1.4.2"
   },
   "prettier": {
     "trailingComma": "all",
