@@ -1,4 +1,4 @@
-class Vec2 {
+export default class Vec2 {
   x: number;
   y: number;
 
@@ -32,6 +32,9 @@ class Vec2 {
   magnitude() {
     return Math.sqrt(this.x * this.x + this.y * this.y);
   }
+  angle() {
+    return Math.atan2(this.y, this.x);
+  }
 
   /* ===== Modify ===== */
   normalize() {
@@ -48,9 +51,7 @@ class Vec2 {
    * Theta angle will be in radians
    */
   toPolar() {
-    const radius = Math.sqrt(this.x * this.x + this.y * this.y);
-    const theta = Math.atan2(this.y, this.x);
-    return new Vec2(radius, theta);
+    return new Vec2(this.magnitude(), this.angle());
   }
 
   /**
