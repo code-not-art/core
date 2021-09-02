@@ -2,20 +2,6 @@ import Color from '.';
 import { clamp } from '../utils';
 
 /**
- * For any input that accepts a Color instance or a CSS style color string,
- * this will convert to a Color object if neccessary
- * @param value Color object or CSS string for the color
- * @returns Color
- */
-export function toColor(value: Color | string): Color {
-  if (value instanceof Color) {
-    return value;
-  } else {
-    return new Color({ css: value });
-  }
-}
-
-/**
  * Mix two colors together in any ratio
  * @param c1 color 1
  * @param c2 color 2
