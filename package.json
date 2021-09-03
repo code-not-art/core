@@ -1,8 +1,9 @@
 {
-  "name": "core",
+  "name": "@code-not-art/core",
   "version": "1.0.0",
   "description": "HTML 5 Canvas Drawing Library",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
