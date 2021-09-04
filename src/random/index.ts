@@ -55,6 +55,11 @@ class Random {
     this._contexts.pop();
   }
 
+  reset() {
+    const context = this.getContext();
+    context.rng = srng(context.seed);
+  }
+
   /* ***
    * Do Random Stuff
    *** */
