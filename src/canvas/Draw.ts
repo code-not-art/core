@@ -48,7 +48,6 @@ export default class Draw {
     fill?: Color;
     stroke?: Stroke;
   }) {
-    console.log(origin);
     this.context.beginPath();
     this.context.arc(origin.x, origin.y, radius, 0, Math.PI * 2);
     this.context.closePath();
@@ -66,8 +65,8 @@ export default class Draw {
     point: Vec2;
     height: number;
     width: number;
-    stroke: Stroke;
-    fill: Color;
+    stroke?: Stroke;
+    fill?: Color;
   }) {
     // Map all corners except the start
     const corners = [
