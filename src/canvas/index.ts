@@ -1,3 +1,5 @@
+import { Vec2 } from '../math';
+import Color from '../color';
 import Draw from './Draw';
 
 class Canvas {
@@ -47,11 +49,26 @@ class Canvas {
     },
   };
 
+  // TODO: Both clear and fill need to have code that resets all context translate/rotations and then restore the previous
+
   /**
    * Reset the content on the canvas. Will clear all current marks and return to full transparent.
    */
   clear = () => {
     this.context.clearRect(0, 0, this.get.width(), this.get.height());
+  };
+
+  /**
+   * Fill the entire canvas with a single color
+   * @param color
+   */
+  fill = (color: Color) => {
+    this.draw.rect({
+      point: Vec2.origin(),
+      height: this.get.height(),
+      width: this.get.width(),
+      fill: color,
+    });
   };
 }
 
