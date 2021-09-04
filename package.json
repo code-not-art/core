@@ -34,8 +34,10 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
+    "a-set-of-english-words": "^1.0.0",
     "seed-random": "^2.2.0",
-    "tinycolor2": "^1.4.2"
+    "tinycolor2": "^1.4.2",
+    "wink-pos-tagger": "^2.2.2"
   },
   "prettier": {
     "trailingComma": "all",

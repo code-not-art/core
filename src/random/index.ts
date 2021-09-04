@@ -1,5 +1,6 @@
 import srng from 'seed-random';
 import { array, repeat } from '../utils';
+import * as Words from './words';
 
 type Context = {
   context: string;
@@ -80,6 +81,20 @@ class Random {
 
   float(min: number, max: number): number {
     return this.next() * (max - min + 1) + min;
+  }
+
+  word(type?: 'noun' | 'adjective' | 'adverb') {
+    switch (type) {
+      case 'noun':
+        return Words.getNoun(this.next());
+      case 'adjective':
+        return Words.getAdjective(this.next());
+      case 'adverb':
+        return Words.getAdverb(this.next());
+      default:
+        return Words.getWord(this.next());
+        break;
+    }
   }
 
   fuzzy(base: number) {
