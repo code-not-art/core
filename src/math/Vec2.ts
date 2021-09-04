@@ -61,6 +61,8 @@ class Vec2 {
     return new Vec2(Math.cos(this.y) * this.x, Math.sin(this.y) * this.x);
   }
 
+  // ===== Some generators for common simple vectors
+
   static origin() {
     return new Vec2(0, 0);
   }
