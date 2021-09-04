@@ -1,7 +1,8 @@
-import Random from './random';
 import * as Constants from './constants';
 import * as Utils from './utils';
-import * as Color from './color';
-import * as Canvas from './canvas';
+import Canvas from './canvas';
+import Color from './color';
+import Random from './random';
+import Vec2 from './math/Vec2';
 
-export { Canvas, Color, Constants, Random, Utils };
+export { Canvas, Color, Constants, Random, Utils, Vec2 };

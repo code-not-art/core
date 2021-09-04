@@ -1,4 +1,4 @@
-export default class Vec2 {
+class Vec2 {
   x: number;
   y: number;
 
@@ -61,3 +61,4 @@ export default class Vec2 {
     return new Vec2(Math.cos(this.y) * this.x, Math.sin(this.y) * this.x);
   }
 }
+export default Vec2;

@@ -1,6 +1,6 @@
 import Draw from './Draw';
 
-export default class Canvas {
+class Canvas {
   canvas: HTMLCanvasElement;
   context: CanvasRenderingContext2D;
   draw: Draw;
@@ -35,6 +35,9 @@ export default class Canvas {
   get = {
     width: () => this.canvas.width,
     height: () => this.canvas.height,
+    minDim: () => Math.min(this.canvas.width, this.canvas.height),
+    maxDim: () => Math.max(this.canvas.width, this.canvas.height),
+    aspectRatio: () => this.canvas.width / this.canvas.height,
   };
 
   set = {
@@ -43,4 +46,13 @@ export default class Canvas {
       this.canvas.style.width = width + 'px';
     },
   };
+
+  /**
+   * Reset the content on the canvas. Will clear all current marks and return to full transparent.
+   */
+  clear = () => {
+    this.context.clearRect(0, 0, this.get.width(), this.get.height());
+  };
 }
+
+export default Canvas;

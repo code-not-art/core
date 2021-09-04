@@ -3,7 +3,7 @@ import tinycolor from 'tinycolor2';
 import { Random } from '../';
 import { clamp } from '../utils';
 
-export default class Color {
+class Color {
   seed;
   color;
 
@@ -107,3 +107,5 @@ export default class Color {
     return new Color({ h, s, v, a });
   }
 }
+
+export default Color;
