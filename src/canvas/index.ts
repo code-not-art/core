@@ -42,8 +42,8 @@ class Canvas {
 
   set = {
     size: (width: number, height: number) => {
-      this.canvas.style.height = height + 'px';
-      this.canvas.style.width = width + 'px';
+      this.canvas.height = height;
+      this.canvas.width = width;
     },
   };
 
