@@ -60,5 +60,13 @@ class Vec2 {
   toCoords() {
     return new Vec2(Math.cos(this.y) * this.x, Math.sin(this.y) * this.x);
   }
+
+  static origin() {
+    return new Vec2(0, 0);
+  }
+
+  static unit() {
+    return new Vec2(1, 0);
+  }
 }
 export default Vec2;
