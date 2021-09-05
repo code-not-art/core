@@ -4,7 +4,7 @@ const tagger = require('wink-pos-tagger')();
 
 const nounSymbols = ['NN', 'NNP', 'NNS', 'NNPS'];
 
-const adverbSymboles = ['RB', 'RBS', 'RBR'];
+const adverbSymbols = ['RB']; // Removing awkward comparor adverbs (-er and -est): [, 'RBS', 'RBR']
 
 const adjectiveSymbols = ['JJ', 'JJS', 'JJR'];
 
@@ -28,7 +28,7 @@ export function getNoun(ratio: number) {
   return getWordOfPosType(ratio, nounSymbols);
 }
 export function getAdverb(ratio: number) {
-  return getWordOfPosType(ratio, adverbSymboles);
+  return getWordOfPosType(ratio, adverbSymbols);
 }
 export function getAdjective(ratio: number) {
   return getWordOfPosType(ratio, adjectiveSymbols);
