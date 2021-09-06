@@ -16,7 +16,7 @@ class Random {
   }
 
   createContext(context: string, seed?: string) {
-    const _seed = `${seed || Math.random()}`;
+    const _seed = `${seed ? seed : Math.random()}`;
     return { context, count: 0, seed: _seed, rng: srng(_seed) };
   }
 
@@ -49,7 +49,8 @@ class Random {
   }
 
   push(context: string, seed?: string) {
-    this._contexts.push(this.createContext(context, seed));
+    const _seed = seed === undefined ? this.next().toString() : seed;
+    this._contexts.push(this.createContext(context, _seed));
   }
 
   pop() {
