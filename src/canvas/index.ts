@@ -70,6 +70,14 @@ class Canvas {
       fill: color,
     });
   };
+
+  // ===== Move the draw position
+  translate = (vector: Vec2) => {
+    this.context.translate(vector.x, vector.y);
+  };
+  rotate = (radians: number) => {
+    this.context.rotate(radians);
+  };
 }
 
 export default Canvas;
