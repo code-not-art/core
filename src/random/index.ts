@@ -1,4 +1,5 @@
 import srng from 'seed-random';
+import { TAU } from '../constants';
 import { array, repeat } from '../utils';
 import * as Words from './words';
 
@@ -82,6 +83,10 @@ class Random {
 
   float(min: number, max: number): number {
     return this.next() * (max - min + 1) + min;
+  }
+
+  angle(): number {
+    return this.next() * TAU;
   }
 
   word(type?: 'noun' | 'adjective' | 'adverb') {
