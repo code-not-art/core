@@ -1,9 +1,22 @@
 import Vec2 from '../math/Vec2';
 import Color from '../color';
 import Path, { Bezier2Segment, Bezier3Segment } from './Path';
+import tinycolor from 'tinycolor2';
+
+type ColorSelection = Color | string | tinycolor.Instance;
+
+function resolveColorSelection(selection: ColorSelection) {
+  if (selection instanceof Color) {
+    return selection;
+  } else if (typeof selection === 'string') {
+    return new Color(selection);
+  } else {
+    return new Color(selection.toRgbString());
+  }
+}
 
 export type Stroke = {
-  color: Color;
+  color: ColorSelection;
   width: number;
 };
 
@@ -19,20 +32,22 @@ export default class Draw {
    * Then we'll introduce draw(stroke, fill) which can be used to execute both methods
    * Note that fill is executed before stroke so that any outlines will appear on top on the canvas.
    */
-  private fill(fill?: Color) {
+  private fill(fill?: ColorSelection) {
     if (fill) {
-      this.context.fillStyle = fill.rgb();
+      const color = resolveColorSelection(fill);
+      this.context.fillStyle = color.rgb();
       this.context.fill();
     }
   }
   private stroke(stroke?: Stroke) {
     if (stroke) {
+      const color = resolveColorSelection(stroke.color);
       this.context.lineWidth = stroke.width;
-      this.context.strokeStyle = stroke.color.rgb();
+      this.context.strokeStyle = color.rgb();
       this.context.stroke();
     }
   }
-  private draw(stroke?: Stroke, fill?: Color) {
+  private draw(stroke?: Stroke, fill?: ColorSelection) {
     this.fill(fill);
     this.stroke(stroke);
   }
@@ -45,7 +60,7 @@ export default class Draw {
   }: {
     origin: Vec2;
     radius: number;
-    fill?: Color;
+    fill?: ColorSelection;
     stroke?: Stroke;
   }) {
     this.context.beginPath();
@@ -66,7 +81,7 @@ export default class Draw {
     height: number;
     width: number;
     stroke?: Stroke;
-    fill?: Color;
+    fill?: ColorSelection;
   }) {
     // Map all corners except the start
     const corners = [
@@ -85,7 +100,15 @@ export default class Draw {
     this.draw(stroke, fill);
   }
 
-  path({ path, fill, stroke }: { path: Path; fill?: Color; stroke?: Stroke }) {
+  path({
+    path,
+    fill,
+    stroke,
+  }: {
+    path: Path;
+    fill?: ColorSelection;
+    stroke?: Stroke;
+  }) {
     this.context.beginPath();
     this.context.moveTo(path.start.x, path.start.y);
     path.segments.forEach((segment) => {
