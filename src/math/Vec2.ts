@@ -8,8 +8,12 @@ class Vec2 {
   }
 
   /* ===== Base Maths ===== */
-  add(vector: Vec2) {
-    return new Vec2(this.x + vector.x, this.y + vector.y);
+  add(value: Vec2 | number) {
+    if (value instanceof Vec2) {
+      return new Vec2(this.x + value.x, this.y + value.y);
+    } else {
+      return new Vec2(this.x + value, this.y + value);
+    }
   }
 
   diff(vector: Vec2) {
