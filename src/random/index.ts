@@ -106,8 +106,11 @@ class Random {
   fuzzy(base: number) {
     return {
       int: (range: number): number =>
-        Math.round(this.int(-range, range) + base),
-      float: (range: number): number => this.float(-range, range) + base,
+        range === 0
+          ? this.next() * 0 + base
+          : Math.round(this.int(-range, range) + base),
+      float: (range: number): number =>
+        range === 0 ? this.next() * 0 + base : this.float(-range, range) + base,
     };
   }
 
