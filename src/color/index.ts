@@ -5,7 +5,7 @@ import { clamp } from '../utils';
 
 class Color {
   seed;
-  color;
+  private _color;
 
   /**
    * Color
@@ -30,9 +30,9 @@ class Color {
         0,
         100,
       )}%, ${_rng.float(0, 100)}%, 1)`;
-      this.color = tinycolor(hsv);
+      this._color = tinycolor(hsv);
     } else if (typeof options === 'string') {
-      this.color = tinycolor(options);
+      this._color = tinycolor(options);
     } else {
       this.seed =
         options.seed || new Random(`Random Color Seed`).next().toString();
@@ -43,55 +43,59 @@ class Color {
       const _v = options.v || _rng.float(0, 100);
       const _a = options.a || 1;
       const hsv = `hsva(${_h}, ${_s}%, ${_v}%, ${_a})`;
-      this.color = tinycolor(hsv);
+      this._color = tinycolor(hsv);
     }
   }
 
   rgb() {
-    return this.color.toRgbString();
+    return this._color.toRgbString();
   }
 
-  get = { rgb: () => this.color.toRgb(), hsv: () => this.color.toHsv() };
+  get = { rgb: () => this._color.toRgb(), hsv: () => this._color.toHsv() };
 
   set = {
     rgb: (r: number, g: number, b: number) => {
-      const rgba = this.color.toRgb();
-      this.color = tinycolor({ a: rgba.a, r, g, b });
+      const rgba = this._color.toRgb();
+      this._color = tinycolor({ a: rgba.a, r, g, b });
     },
     hsv: (h: number, s: number, v: number) => {
-      const hsva = this.color.toHsv();
-      this.color = tinycolor({ a: hsva.a, h, s, v });
+      const hsva = this._color.toHsv();
+      this._color = tinycolor({ a: hsva.a, h, s, v });
     },
 
     alpha: (a: number) => {
-      const rgba = this.color.toRgb();
-      this.color = tinycolor({ ...rgba, a });
+      const rgba = this._color.toRgb();
+      this._color = tinycolor({ ...rgba, a });
     },
     red: (r: number) => {
-      const rgba = this.color.toRgb();
-      this.color = tinycolor({ ...rgba, r });
+      const rgba = this._color.toRgb();
+      this._color = tinycolor({ ...rgba, r });
     },
     green: (g: number) => {
-      const rgba = this.color.toRgb();
-      this.color = tinycolor({ ...rgba, g });
+      const rgba = this._color.toRgb();
+      this._color = tinycolor({ ...rgba, g });
     },
     blue: (b: number) => {
-      const rgba = this.color.toRgb();
-      this.color = tinycolor({ ...rgba, b });
+      const rgba = this._color.toRgb();
+      this._color = tinycolor({ ...rgba, b });
     },
     hue: (h: number) => {
-      const hsva = this.color.toHsv();
-      this.color = tinycolor({ ...hsva, h });
+      const hsva = this._color.toHsv();
+      this._color = tinycolor({ ...hsva, h });
     },
     saturation: (s: number) => {
-      const hsva = this.color.toHsv();
-      this.color = tinycolor({ ...hsva, s });
+      const hsva = this._color.toHsv();
+      this._color = tinycolor({ ...hsva, s });
     },
     value: (v: number) => {
-      const hsva = this.color.toHsv();
-      this.color = tinycolor({ ...hsva, v });
+      const hsva = this._color.toHsv();
+      this._color = tinycolor({ ...hsva, v });
     },
   };
+
+  color() {
+    return tinycolor(this._color.toRgb());
+  }
 
   static mix(c1: Color, c2: Color, ratio: number = 0.5): Color {
     const clampedRatio = clamp(ratio);
