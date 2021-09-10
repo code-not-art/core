@@ -1,4 +1,5 @@
 import srng from 'seed-random';
+import { Vec2 } from '..';
 import { TAU } from '../constants';
 import { array, repeat } from '../utils';
 import * as Words from './words';
@@ -87,6 +88,14 @@ class Random {
 
   angle(): number {
     return this.next() * TAU;
+  }
+
+  /**
+   * Random unit vector
+   * @returns {Vec2}
+   */
+  vec2(): Vec2 {
+    return Vec2.unit().rotate(this.angle());
   }
 
   word(type?: 'noun' | 'adjective' | 'adverb') {
