@@ -1,3 +1,7 @@
+/**
+ * Two dimensional vector.
+ * Most methods treat the vector as though it is in cartesian space, with coordinates (x, y). The two conversion methods change (x, y) coordinates to (radius, angle) where the angle, in radians, is from the x-axis to the vector.
+ */
 class Vec2 {
   x: number;
   y: number;
@@ -16,8 +20,12 @@ class Vec2 {
     }
   }
 
-  diff(vector: Vec2) {
-    return new Vec2(this.x - vector.x, this.y - vector.y);
+  diff(value: Vec2 | number) {
+    if (value instanceof Vec2) {
+      return new Vec2(this.x - value.x, this.y - value.y);
+    } else {
+      return new Vec2(this.x - value, this.y - value);
+    }
   }
 
   scale(scalar: number) {
@@ -67,12 +75,36 @@ class Vec2 {
 
   // ===== Some generators for common simple vectors
 
+  /**
+   * Vec2 for the origin of the plane. Shortcut for `new Vec2(0, 0)`
+   * @returns {Vec2} (0, 0)
+   */
   static origin() {
     return new Vec2(0, 0);
   }
 
+  /**
+   * Alias for `Vec2.origin`. Shortcut for `new Vec2(0, 0)`
+   * @returns {Vec2} (0, 0)
+   */
+  static zero() {
+    return Vec2.origin();
+  }
+
+  /**
+   * Vec2 of size 1 along the first (x) axis. Shortcut for `new Vec2(1, 0)`.
+   * @returns {vec2} (1, 0)
+   */
   static unit() {
     return new Vec2(1, 0);
+  }
+
+  /**
+   * Vec2 of all 1's. Shortcut for `new Vec2(1, 1)`
+   * @returns {Vec2} (0, 0)
+   */
+  static ones() {
+    return new Vec2(1, 1);
   }
 }
 export default Vec2;
