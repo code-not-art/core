@@ -3,7 +3,7 @@ import Color from '../color';
 import Path, { Bezier2Segment, Bezier3Segment } from './Path';
 import tinycolor from 'tinycolor2';
 
-type ColorSelection = Color | string | tinycolor.Instance;
+export type ColorSelection = Color | string | tinycolor.Instance;
 
 function resolveColorSelection(selection: ColorSelection) {
   if (selection instanceof Color) {
