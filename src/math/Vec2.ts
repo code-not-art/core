@@ -40,6 +40,13 @@ class Vec2 {
     return this.x * vector.y - this.y * vector.x;
   }
 
+  within(max: Vec2, min?: Vec2) {
+    const _min = min || Vec2.origin();
+    return (
+      this.x < max.x && this.y < max.y && this.x > _min.x && this.y > _min.y
+    );
+  }
+
   /* ===== Properties ===== */
   magnitude() {
     return Math.sqrt(this.x * this.x + this.y * this.y);
