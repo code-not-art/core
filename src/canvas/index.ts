@@ -1,6 +1,5 @@
 import { Vec2 } from '../math';
-import Color from '../color';
-import Draw from './Draw';
+import Draw, { ColorSelection } from './Draw';
 
 class Canvas {
   canvas: HTMLCanvasElement;
@@ -40,6 +39,7 @@ class Canvas {
     minDim: () => Math.min(this.canvas.width, this.canvas.height),
     maxDim: () => Math.max(this.canvas.width, this.canvas.height),
     aspectRatio: () => this.canvas.width / this.canvas.height,
+    size: () => new Vec2(this.canvas.width, this.canvas.height),
   };
 
   set = {
@@ -62,13 +62,16 @@ class Canvas {
    * Fill the entire canvas with a single color
    * @param color
    */
-  fill = (color: Color) => {
+  fill = (color: ColorSelection) => {
+    const storedTransform = this.context.getTransform();
+    this.context.resetTransform();
     this.draw.rect({
       point: Vec2.origin(),
       height: this.get.height(),
       width: this.get.width(),
       fill: color,
     });
+    this.context.setTransform(storedTransform);
   };
 
   // ===== Move the draw position
