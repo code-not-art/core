@@ -1,5 +1,6 @@
 import srng from 'seed-random';
 import { Color, Vec2 } from '..';
+import Distribution, { Uniform } from './distributions';
 import { TAU } from '../constants';
 import { array, repeat } from '../utils';
 import * as Words from './words';
@@ -68,26 +69,31 @@ class Random {
    * Make Random Stuff
    *** */
 
-  next(): number {
+  /**
+   * Get the next random value available. This will return a numerical value between 0 and 1.
+   * @param distribution {Distribution} modify
+   * @returns
+   */
+  next(distribution: Distribution = Uniform): number {
     const _context = this.getContext();
     _context.count++;
-    return _context.rng();
+    return distribution(_context.rng());
   }
 
-  bool(chance: number = 0.5): boolean {
-    return this.next() <= chance;
+  bool(chance: number = 0.5, distribution?: Distribution): boolean {
+    return this.next(distribution) <= chance;
   }
 
-  int(min: number, max: number): number {
-    return Math.floor(this.next() * (max - min + 1) + min);
+  int(min: number, max: number, distribution?: Distribution): number {
+    return Math.floor(this.next(distribution) * (max - min + 1) + min);
   }
 
-  float(min: number, max: number): number {
-    return this.next() * (max - min + 1) + min;
+  float(min: number, max: number, distribution?: Distribution): number {
+    return this.next(distribution) * (max - min + 1) + min;
   }
 
-  angle(): number {
-    return this.next() * TAU;
+  angle(distribution?: Distribution): number {
+    return this.next(distribution) * TAU;
   }
 
   /**
@@ -149,10 +155,11 @@ class Random {
 
   /**
    * Random unit vector
+   * @param distribution {Distribution} is applied to the random angle applied to the unit vector
    * @returns {Vec2}
    */
-  vec2(): Vec2 {
-    return Vec2.unit().rotate(this.angle());
+  vec2(distribution?: Distribution): Vec2 {
+    return Vec2.unit().rotate(this.angle(distribution));
   }
 
   word(type?: 'noun' | 'adjective' | 'adverb') {
@@ -169,14 +176,17 @@ class Random {
     }
   }
 
-  fuzzy(base: number) {
+  fuzzy(base: number, distribution?: Distribution) {
     return {
+      // The checks for range === 0  are done to ensure that the same number of calls to the rng are occurring, even if the fuzzy range is 0
       int: (range: number): number =>
         range === 0
-          ? this.next() * 0 + base
-          : Math.round(this.int(-range, range) + base),
+          ? this.next(distribution) * 0 + base
+          : Math.round(this.int(-range, range, distribution) + base),
       float: (range: number): number =>
-        range === 0 ? this.next() * 0 + base : this.float(-range, range) + base,
+        range === 0
+          ? this.next(distribution) * 0 + base
+          : this.float(-range, range, distribution) + base,
     };
   }
 
