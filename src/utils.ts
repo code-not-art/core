@@ -11,9 +11,11 @@ import { TAU } from './constants';
  */
 export function clamp(
   value: number,
-  options: { min: number; max: number } = { min: 0, max: 1 },
+  options: { min?: number; max?: number } = {},
 ): number {
-  return Math.max(options.min, Math.min(options.max, value));
+  const min = options.min === undefined ? 0 : options.min;
+  const max = options.max === undefined ? 1 : options.max;
+  return Math.max(min, Math.min(max, value));
 }
 
 // Arrays and Iteration
