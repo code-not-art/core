@@ -1,5 +1,5 @@
 import srng from 'seed-random';
-import { Vec2 } from '..';
+import { Color, Vec2 } from '..';
 import { TAU } from '../constants';
 import { array, repeat } from '../utils';
 import * as Words from './words';
@@ -65,7 +65,7 @@ class Random {
   }
 
   /* ***
-   * Do Random Stuff
+   * Make Random Stuff
    *** */
 
   next(): number {
@@ -88,6 +88,63 @@ class Random {
 
   angle(): number {
     return this.next() * TAU;
+  }
+
+  /**
+   * Randomize a color. Options allow control over the range of output values.
+   * @param options {Object} Provide a value for any of hue, saturation and value - or provide an object with min or max values to specify the range these values should be generated within. When choosing the range, you can specify a maximum above the range of the value (h: 360, s: 100, v: 100) to allow having a range that spans the hue around the extremes. For example `{h:{min:320, max: 400}}`. The generator will wrap the values above the maximum back within the expected range.
+   * @returns {Color}
+   */
+  color(
+    options: {
+      h?: { min?: number; max?: number } | number;
+      s?: { min?: number; max?: number } | number;
+      v?: { min?: number; max?: number } | number;
+    } = {},
+  ): Color {
+    let h;
+    let s;
+    let v;
+
+    // Choice of options will change the number of random calls, so execute this within a new random context
+    this.push('random color', this.next().toString());
+
+    if (options.h) {
+      if (options.h instanceof Object) {
+        const min =
+          options.h.min === undefined ? 0 : Math.max(0, options.h.min);
+        const max = options.h.max === undefined ? 360 : options.h.max;
+        h = this.float(min, max) % 360;
+      } else {
+        h = options.h;
+      }
+    }
+    if (options.s) {
+      if (options.s instanceof Object) {
+        const min =
+          options.s.min === undefined ? 0 : Math.max(0, options.s.min);
+        const max = options.s.max === undefined ? 100 : options.s.max;
+        s = this.float(min, max) % 100;
+      } else {
+        s = options.s;
+      }
+    }
+    if (options.v) {
+      if (options.v instanceof Object) {
+        const min =
+          options.v.min === undefined ? 0 : Math.max(0, options.v.min);
+        const max = options.v.max === undefined ? 0 : options.v.max;
+        v = this.float(min, max) % 100;
+      } else {
+        v = options.v;
+      }
+    }
+    const seed = this.next().toString();
+    const output = new Color({ seed, h, s, v });
+
+    // Return to original random context
+    this.pop();
+    return output;
   }
 
   /**
