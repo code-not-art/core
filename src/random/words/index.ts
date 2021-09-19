@@ -20,6 +20,11 @@ export function getWordOfPosType(ratio: number, types: string[]) {
       return word.value as string;
     }
     index++;
+
+    // Edgecase for getting to end of list, wrap around to beginning
+    if (index >= wordList.length) {
+      index = 0;
+    }
   }
   return '';
 }
