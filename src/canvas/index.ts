@@ -1,4 +1,5 @@
 import { Vec2 } from '../math';
+import BlendMode from './BlendMode';
 import Draw, { ColorSelection } from './Draw';
 
 class Canvas {
@@ -34,18 +35,49 @@ class Canvas {
   }
 
   get = {
+    // Canvas size
+    /**
+     * Canvas width (in pixels)
+     * @returns {number}
+     */
     width: () => this.canvas.width,
+    /**
+     * Canvas Height (in pixels)
+     * @returns {number}
+     */
     height: () => this.canvas.height,
+    /**
+     * Minimum dimension, the lesser of width and height
+     * @returns {number}
+     */
     minDim: () => Math.min(this.canvas.width, this.canvas.height),
+    /**
+     * Maximum dimension, the greater of width and height
+     * @returns {number}
+     */
     maxDim: () => Math.max(this.canvas.width, this.canvas.height),
+    /**
+     * The ratio of width to height
+     * @returns {number}
+     */
     aspectRatio: () => this.canvas.width / this.canvas.height,
     size: () => new Vec2(this.canvas.width, this.canvas.height),
+
+    // context state
+    blendMode: () => this.context.globalCompositeOperation,
+    transform: () => this.context.getTransform(),
   };
 
   set = {
     size: (width: number, height: number) => {
       this.canvas.height = height;
       this.canvas.width = width;
+    },
+    blendMode: (mode: BlendMode) => {
+      this.context.globalCompositeOperation = mode;
+    },
+    transform: (transform?: DOMMatrix2DInit) => {
+      this.context.setTransform(transform);
     },
   };
 
@@ -81,6 +113,37 @@ class Canvas {
   rotate = (radians: number) => {
     this.context.rotate(radians);
   };
+
+  // ===== Get and Merge layers
+  layer = () => {
+    // probably dont need to get doc from the canvas, could probably just use `document` but maybe there is some edge condition where this matters.
+    const doc = this.canvas.ownerDocument;
+    const layer = doc.createElement('canvas');
+
+    layer.width = this.canvas.width;
+    layer.height = this.canvas.height;
+
+    return new Canvas(layer);
+  };
+
+  apply(layer: Canvas, blendMode?: BlendMode) {
+    const tempBlend = this.context.globalCompositeOperation;
+    this.context.globalCompositeOperation = blendMode || BlendMode.default;
+
+    const storedTransform = this.context.getTransform();
+    this.context.resetTransform();
+
+    this.context.drawImage(
+      layer.canvas,
+      0,
+      0,
+      layer.canvas.width,
+      layer.canvas.height,
+    );
+
+    this.context.setTransform(storedTransform);
+    this.context.globalCompositeOperation = tempBlend;
+  }
 }
 
 export default Canvas;
