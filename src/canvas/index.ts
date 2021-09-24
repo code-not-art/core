@@ -126,17 +126,28 @@ class Canvas {
     return new Canvas(layer);
   };
 
-  apply(layer: Canvas, blendMode?: BlendMode) {
+  apply(
+    layer: Canvas,
+    options: { blendMode?: BlendMode; position?: Vec2; rotation?: number } = {},
+  ) {
+    const { blendMode, position, rotation } = options;
+
     const tempBlend = this.context.globalCompositeOperation;
     this.context.globalCompositeOperation = blendMode || BlendMode.default;
 
     const storedTransform = this.context.getTransform();
     this.context.resetTransform();
+    if (rotation) {
+      this.context.rotate(rotation);
+    }
+
+    const x = position ? position.x : 0;
+    const y = position ? position.y : 0;
 
     this.context.drawImage(
       layer.canvas,
-      0,
-      0,
+      x,
+      y,
       layer.canvas.width,
       layer.canvas.height,
     );
