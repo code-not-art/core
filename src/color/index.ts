@@ -57,12 +57,21 @@ class Color {
     return this._color.toRgbString();
   }
 
-  get = { rgb: () => this._color.toRgb(), hsv: () => this._color.toHsv() };
+  get = {
+    alpha: () => this._color.getAlpha(),
+    rgb: () => this._color.toRgb(),
+    hex: () => this._color.toHex(),
+    hsv: () => this._color.toHsv(),
+  };
 
   set = {
     rgb: (r: number, g: number, b: number) => {
-      const rgba = this._color.toRgb();
-      this._color = tinycolor({ a: rgba.a, r, g, b });
+      this._color = tinycolor({ a: this._color.getAlpha(), r, g, b });
+    },
+    hex: (value: string) => {
+      const alpha = this._color.getAlpha();
+      this._color = tinycolor(value);
+      this._color.setAlpha(alpha);
     },
     hsv: (h: number, s: number, v: number) => {
       const hsva = this._color.toHsv();
