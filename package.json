@@ -1,6 +1,6 @@
 {
   "name": "@code-not-art/core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "HTML 5 Canvas Drawing Library",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
