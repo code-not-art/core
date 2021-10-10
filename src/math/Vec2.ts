@@ -28,8 +28,12 @@ class Vec2 {
     }
   }
 
-  scale(scalar: number) {
-    return new Vec2(this.x * scalar, this.y * scalar);
+  scale(value: number | Vec2) {
+    if (typeof value === 'object') {
+      return new Vec2(this.x * value.x, this.y * value.y);
+    } else {
+      return new Vec2(this.x * value, this.y * value);
+    }
   }
 
   dot(vector: Vec2) {
