@@ -100,7 +100,8 @@ class Random {
       : this.getContext().distribution;
     const _context = this.getContext();
     _context.count++;
-    return _distribution(_context.rng());
+    const x = _context.rng();
+    return _distribution(x);
   }
 
   bool(chance: number = 0.5, distribution?: Distribution): boolean {
@@ -209,7 +210,7 @@ class Random {
       float: (range: number): number =>
         range === 0
           ? this.next(distribution) * 0 + base
-          : this.float(-range, range, distribution) + base,
+          : this.float(-range * 100, range * 100, distribution) / 100 + base, // awkward 100 stuff because if range is small (like 0.1 or less) then the near zero values deal with float rounding issues.
     };
   }
 

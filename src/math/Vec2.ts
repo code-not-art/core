@@ -11,6 +11,14 @@ class Vec2 {
     this.y = y;
   }
 
+  /* ===== Properties ===== */
+  magnitude() {
+    return Math.sqrt(this.x * this.x + this.y * this.y);
+  }
+  angle() {
+    return Math.atan2(this.y, this.x);
+  }
+
   /* ===== Base Maths ===== */
   add(value: Vec2 | number) {
     if (value instanceof Vec2) {
@@ -40,6 +48,11 @@ class Vec2 {
     return this.x * vector.x + this.y * vector.y;
   }
 
+  /**
+   * Equivalent to the determinant between two Vec2's, not exactly the 3D vector cross product.
+   * @param vector
+   * @returns
+   */
   cross(vector: Vec2) {
     return this.x * vector.y - this.y * vector.x;
   }
@@ -51,22 +64,25 @@ class Vec2 {
     );
   }
 
-  /* ===== Properties ===== */
-  magnitude() {
-    return Math.sqrt(this.x * this.x + this.y * this.y);
-  }
-  angle() {
-    return Math.atan2(this.y, this.x);
-  }
-
   /* ===== Modify ===== */
   normalize() {
     const M = this.magnitude();
     return new Vec2(this.x / M, this.y / M);
   }
+  /**
+   *
+   * @param angle in radians
+   * @returns
+   */
   rotate(angle: number) {
     return this.toPolar().add(new Vec2(0, angle)).toCoords();
   }
+  withMagnitude = (magnitude: number) => {
+    return this.normalize().scale(magnitude);
+  };
+  withAngle = (angle: number) => {
+    return Vec2.unit().rotate(angle).scale(this.magnitude());
+  };
 
   /* ===== Convert ===== */
   /**
