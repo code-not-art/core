@@ -65,46 +65,56 @@ class Color {
   };
 
   set = {
-    rgb: (r: number, g: number, b: number) => {
+    rgb: (r: number, g: number, b: number): Color => {
       this._color = tinycolor({ a: this._color.getAlpha(), r, g, b });
+      return this;
     },
-    hex: (value: string) => {
+    hex: (value: string): Color => {
       const alpha = this._color.getAlpha();
       this._color = tinycolor(value);
       this._color.setAlpha(alpha);
+      return this;
     },
-    hsv: (h: number, s: number, v: number) => {
+    hsv: (h: number, s: number, v: number): Color => {
       const hsva = this._color.toHsv();
       this._color = tinycolor({ a: hsva.a, h, s, v });
+      return this;
     },
 
-    alpha: (a: number) => {
+    alpha: (a: number): Color => {
       const rgba = this._color.toRgb();
       this._color = tinycolor({ ...rgba, a });
+      return this;
     },
-    red: (r: number) => {
+    red: (r: number): Color => {
       const rgba = this._color.toRgb();
       this._color = tinycolor({ ...rgba, r });
+      return this;
     },
-    green: (g: number) => {
+    green: (g: number): Color => {
       const rgba = this._color.toRgb();
       this._color = tinycolor({ ...rgba, g });
+      return this;
     },
-    blue: (b: number) => {
+    blue: (b: number): Color => {
       const rgba = this._color.toRgb();
       this._color = tinycolor({ ...rgba, b });
+      return this;
     },
-    hue: (h: number) => {
+    hue: (h: number): Color => {
       const hsva = this._color.toHsv();
       this._color = tinycolor({ ...hsva, h });
+      return this;
     },
-    saturation: (s: number) => {
+    saturation: (s: number): Color => {
       const hsva = this._color.toHsv();
       this._color = tinycolor({ ...hsva, s });
+      return this;
     },
-    value: (v: number) => {
+    value: (v: number): Color => {
       const hsva = this._color.toHsv();
       this._color = tinycolor({ ...hsva, v });
+      return this;
     },
   };
 
