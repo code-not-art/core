@@ -39,25 +39,27 @@ export default class Path {
     this.segments = [];
   }
 
-  move(destination: Vec2) {
+  move(destination: Vec2): Path {
     const segment: MoveSegment = {
       type: SegmentType.Move,
       point: destination,
     };
 
     this.segments.push(segment);
+    return this;
   }
 
-  line(destination: Vec2) {
+  line(destination: Vec2): Path {
     const segment: LineSegment = {
       type: SegmentType.Line,
       point: destination,
     };
 
     this.segments.push(segment);
+    return this;
   }
 
-  bez2(destination: Vec2, control: Vec2) {
+  bez2(destination: Vec2, control: Vec2): Path {
     const segment: Bezier2Segment = {
       type: SegmentType.Bezier2,
       point: destination,
@@ -65,9 +67,10 @@ export default class Path {
     };
 
     this.segments.push(segment);
+    return this;
   }
 
-  bez3(destination: Vec2, control1: Vec2, control2: Vec2) {
+  bez3(destination: Vec2, control1: Vec2, control2: Vec2): Path {
     const segment: Bezier3Segment = {
       type: SegmentType.Bezier3,
       point: destination,
@@ -76,5 +79,6 @@ export default class Path {
     };
 
     this.segments.push(segment);
+    return this;
   }
 }
