@@ -2,10 +2,22 @@ import { Vec2 } from '../math';
 import BlendMode from './BlendMode';
 import Draw, { ColorSelection } from './Draw';
 
+type CanvasTransform = {
+  push: () => CanvasTransform;
+  pop: () => CanvasTransform;
+  reset: () => CanvasTransform;
+  set: (transform: DOMMatrix) => CanvasTransform;
+  translate: (vector: Vec2) => CanvasTransform;
+  scale: (factor: Vec2) => CanvasTransform;
+  rotate: (radians: number) => CanvasTransform;
+};
+
 class Canvas {
   canvas: HTMLCanvasElement;
   context: CanvasRenderingContext2D;
   draw: Draw;
+
+  private _transforms: DOMMatrix[] = [];
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
@@ -76,7 +88,7 @@ class Canvas {
     blendMode: (mode: BlendMode) => {
       this.context.globalCompositeOperation = mode;
     },
-    transform: (transform?: DOMMatrix2DInit) => {
+    transform: (transform?: DOMMatrix) => {
       this.context.setTransform(transform);
     },
   };
@@ -106,12 +118,42 @@ class Canvas {
     this.context.setTransform(storedTransform);
   };
 
-  // ===== Move the draw position
-  translate = (vector: Vec2) => {
-    this.context.translate(vector.x, vector.y);
-  };
-  rotate = (radians: number) => {
-    this.context.rotate(radians);
+  transform: CanvasTransform = {
+    push: (): CanvasTransform => {
+      this._transforms.push(this.context.getTransform());
+      return this.transform;
+    },
+    pop: (): CanvasTransform => {
+      const storedTransform = this._transforms.pop();
+      if (storedTransform) {
+        this.context.setTransform(storedTransform);
+      } else {
+        this.context.resetTransform();
+      }
+      return this.transform;
+    },
+    reset: (): CanvasTransform => {
+      this.context.resetTransform();
+      return this.transform;
+    },
+    set: (transform: DOMMatrix): CanvasTransform => {
+      this.context.setTransform(transform);
+      return this.transform;
+    },
+
+    // ===== Move the draw position
+    translate: (vector: Vec2): CanvasTransform => {
+      this.context.translate(vector.x, vector.y);
+      return this.transform;
+    },
+    scale: (factor: Vec2): CanvasTransform => {
+      this.context.scale(factor.x, factor.y);
+      return this.transform;
+    },
+    rotate: (radians: number): CanvasTransform => {
+      this.context.rotate(radians);
+      return this.transform;
+    },
   };
 
   // ===== Get and Merge layers
