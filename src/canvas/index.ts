@@ -24,15 +24,16 @@ class Canvas {
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
 
-    const maybeCanvas = canvas.getContext('2d');
-    if (!maybeCanvas) {
+    const maybeContext = canvas.getContext('2d');
+    if (!maybeContext) {
       // Handling potential return of `undefined` - Don't ever expect this but we're playing nice with TypeScript
       // If this happens then this whole class will fail everything so might as well just throw an error and break the script.
       throw new Error('Canvas could not return 2D Context');
     }
-    this.context = maybeCanvas;
+    this.context = maybeContext;
+    this.context.lineCap = 'round';
 
-    this.draw = new Draw(this.context);
+    this.draw = new Draw(maybeContext);
   }
 
   /**

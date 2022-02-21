@@ -18,6 +18,7 @@ function resolveColorSelection(selection: ColorSelection) {
 export type Stroke = {
   color: ColorSelection;
   width: number;
+  cap?: 'round' | 'butt' | 'square';
 };
 
 export default class Draw {
@@ -27,11 +28,15 @@ export default class Draw {
   }
 
   /* *****
-   * Stroke and Fill are the outputs of all of the draw methods
+   * Stroke and Fill are the outputs of all of the draw method
    * Since this behaviour is repeated we'll capture it in these two private methods
    * Then we'll introduce draw(stroke, fill) which can be used to execute both methods
    * Note that fill is executed before stroke so that any outlines will appear on top on the canvas.
    */
+  private draw(stroke?: Stroke, fill?: ColorSelection) {
+    this.fill(fill);
+    this.stroke(stroke);
+  }
   private fill(fill?: ColorSelection) {
     if (fill) {
       const color = resolveColorSelection(fill);
@@ -44,12 +49,11 @@ export default class Draw {
       const color = resolveColorSelection(stroke.color);
       this.context.lineWidth = stroke.width;
       this.context.strokeStyle = color.rgb();
+      if (stroke.cap) {
+        this.context.lineCap = stroke.cap;
+      }
       this.context.stroke();
     }
-  }
-  private draw(stroke?: Stroke, fill?: ColorSelection) {
-    this.fill(fill);
-    this.stroke(stroke);
   }
 
   circle({
@@ -104,14 +108,13 @@ export default class Draw {
     path,
     fill,
     stroke,
-    cap = 'round',
+    close = false,
   }: {
     path: Path;
     fill?: ColorSelection;
     stroke?: Stroke;
-    cap?: 'round' | 'butt' | 'square';
+    close?: boolean;
   }) {
-    this.context.lineCap = cap;
     this.context.beginPath();
     this.context.moveTo(path.start.x, path.start.y);
     path.segments.forEach((segment) => {
@@ -144,7 +147,9 @@ export default class Draw {
           break;
       }
     });
-    this.context.closePath();
+    if (close) {
+      this.context.closePath();
+    }
     this.draw(stroke, fill);
   }
 }
