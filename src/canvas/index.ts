@@ -10,6 +10,8 @@ type CanvasTransform = {
   translate: (vector: Vec2) => CanvasTransform;
   scale: (factor: Vec2) => CanvasTransform;
   rotate: (radians: number) => CanvasTransform;
+  flipHorizontal: () => CanvasTransform;
+  flipVertical: () => CanvasTransform;
 };
 
 class Canvas {
@@ -152,6 +154,14 @@ class Canvas {
     },
     rotate: (radians: number): CanvasTransform => {
       this.context.rotate(radians);
+      return this.transform;
+    },
+    flipHorizontal: (): CanvasTransform => {
+      this.context.scale(-1, 1);
+      return this.transform;
+    },
+    flipVertical: (): CanvasTransform => {
+      this.context.scale(1, -1);
       return this.transform;
     },
   };
