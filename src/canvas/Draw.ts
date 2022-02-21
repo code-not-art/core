@@ -104,11 +104,14 @@ export default class Draw {
     path,
     fill,
     stroke,
+    cap,
   }: {
     path: Path;
     fill?: ColorSelection;
     stroke?: Stroke;
+    cap?: 'round' | 'butt' | 'square';
   }) {
+    this.context.lineCap = cap || 'round';
     this.context.beginPath();
     this.context.moveTo(path.start.x, path.start.y);
     path.segments.forEach((segment) => {
