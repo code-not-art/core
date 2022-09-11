@@ -2,7 +2,7 @@ import { Vec2 } from '../math';
 import BlendMode from './BlendMode';
 import Draw, { ColorSelection } from './Draw';
 
-type CanvasTransform = {
+export type CanvasTransform = {
   push: () => CanvasTransform;
   pop: () => CanvasTransform;
   reset: () => CanvasTransform;
@@ -77,6 +77,12 @@ class Canvas {
      */
     aspectRatio: () => this.canvas.width / this.canvas.height,
     size: () => new Vec2(this.canvas.width, this.canvas.height),
+
+    /**
+     * Center of the canvas (width/2, height/2)
+     * @returns {Vec2}
+     */
+    center: () => new Vec2(this.canvas.width / 2, this.canvas.height / 2),
 
     // context state
     blendMode: () => this.context.globalCompositeOperation,

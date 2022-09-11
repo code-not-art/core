@@ -1,35 +1,40 @@
 import Vec2 from '../math/Vec2';
 
-enum SegmentType {
+export enum SegmentType {
   Move = 'MOVE', // Jumps the position, no line drawn
   Line = 'LINE',
   Bezier2 = 'BEZIER2',
   Bezier3 = 'BEZIER3',
 }
 
-export interface Segment {
-  type: SegmentType;
-  point: Vec2;
-}
-
-export interface MoveSegment extends Segment {
+export type MoveSegment = {
   type: SegmentType.Move;
-}
+  point: Vec2;
+};
 
-export interface LineSegment extends Segment {
+export type LineSegment = {
   type: SegmentType.Line;
-}
+  point: Vec2;
+};
 
-export interface Bezier2Segment extends Segment {
+export type Bezier2Segment = {
   type: SegmentType.Bezier2;
+  point: Vec2;
   control: Vec2;
-}
+};
 
-export interface Bezier3Segment extends Segment {
+export type Bezier3Segment = {
   type: SegmentType.Bezier3;
+  point: Vec2;
   control1: Vec2;
   control2: Vec2;
-}
+};
+
+export type Segment =
+  | MoveSegment
+  | LineSegment
+  | Bezier2Segment
+  | Bezier3Segment;
 
 export default class Path {
   start: Vec2;

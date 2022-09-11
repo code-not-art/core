@@ -1,16 +1,16 @@
 import * as openSimplex from 'open-simplex-noise';
 
-type Noise2D = (x: number, y: number) => number;
-type Noise3D = (x: number, y: number, z: number) => number;
-type Noise4D = (x: number, y: number, z: number, w: number) => number;
+export type Noise2D = (x: number, y: number) => number;
+export type Noise3D = (x: number, y: number, z: number) => number;
+export type Noise4D = (x: number, y: number, z: number, w: number) => number;
 
-type WrapOptions = {
+export type WrapOptions = {
   x?: boolean;
   y?: boolean;
   z?: boolean;
   w?: boolean;
 };
-type NoiseOptions = {
+export type NoiseOptions = {
   amplitude?: number;
   frequency?: number;
   octaves?: number[];
@@ -24,7 +24,10 @@ const defaultOptions = {
   wrap: {},
 };
 
-const simplex2 = (integerSeed: number, options: NoiseOptions = {}): Noise2D => {
+export const simplex2 = (
+  integerSeed: number,
+  options: NoiseOptions = {},
+): Noise2D => {
   const { amplitude, frequency, octaves } = {
     ...defaultOptions,
     ...options,
@@ -42,7 +45,10 @@ const simplex2 = (integerSeed: number, options: NoiseOptions = {}): Noise2D => {
     return output;
   };
 };
-const simplex3 = (integerSeed: number, options: NoiseOptions = {}): Noise3D => {
+export const simplex3 = (
+  integerSeed: number,
+  options: NoiseOptions = {},
+): Noise3D => {
   const { amplitude, frequency, octaves } = {
     ...defaultOptions,
     ...options,
@@ -60,7 +66,10 @@ const simplex3 = (integerSeed: number, options: NoiseOptions = {}): Noise3D => {
     return output;
   };
 };
-const simplex4 = (integerSeed: number, options: NoiseOptions = {}): Noise4D => {
+export const simplex4 = (
+  integerSeed: number,
+  options: NoiseOptions = {},
+): Noise4D => {
   const { amplitude, frequency, octaves } = {
     ...defaultOptions,
     ...options,
@@ -77,10 +86,4 @@ const simplex4 = (integerSeed: number, options: NoiseOptions = {}): Noise4D => {
       (amplitude / octaves.length);
     return output;
   };
-};
-
-export default {
-  simplex2,
-  simplex3,
-  simplex4,
 };

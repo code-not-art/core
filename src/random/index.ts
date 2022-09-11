@@ -5,7 +5,7 @@ import { TAU } from '../constants';
 import { array, repeat } from '../utils';
 import * as Words from './words';
 
-type Context = {
+export type RandomContext = {
   context: string;
   count: number;
   seed: string;
@@ -14,7 +14,7 @@ type Context = {
 };
 
 class Random {
-  _contexts: Context[] = [];
+  _contexts: RandomContext[] = [];
   constructor(context: string, seed?: string) {
     const _seed = `${seed ? seed : Math.random()}`;
     this._contexts.push(this.createContext(context, _seed, Uniform));
@@ -35,7 +35,7 @@ class Random {
    *** */
 
   // Get Data about current active context
-  getContext(): Context {
+  getContext(): RandomContext {
     return this._contexts[this._contexts.length - 1];
   }
   getCount(): number {
@@ -45,7 +45,7 @@ class Random {
     return this.getContext().seed;
   }
 
-  getContextByLabel(context: string): Context | undefined {
+  getContextByLabel(context: string): RandomContext | undefined {
     return this._contexts.find((i) => i.context === context);
   }
   getCountByLabel(context: string) {
