@@ -1,6 +1,6 @@
 import Vec2 from '../math/Vec2';
 import Color from '../color';
-import Path, { Bezier2Segment, Bezier3Segment } from './Path';
+import Path, { SegmentType } from '../structures/Path';
 import tinycolor from 'tinycolor2';
 
 export type ColorSelection = Color | string | tinycolor.Instance;
@@ -28,7 +28,7 @@ export default class Draw {
   }
 
   /* *****
-   * Stroke and Fill are the outputs of all of the draw method
+   * Every draw method sets up the geometry that will be drawn on the canvas context and then executes the stroke and fill on that geometry
    * Since this behaviour is repeated we'll capture it in these two private methods
    * Then we'll introduce draw(stroke, fill) which can be used to execute both methods
    * Note that fill is executed before stroke so that any outlines will appear on top on the canvas.
@@ -56,31 +56,27 @@ export default class Draw {
     }
   }
 
-  circle({
-    origin,
-    radius,
-    fill,
-    stroke,
-  }: {
-    origin: Vec2;
+  // -- Different geometries below
+  circle(inputs: {
+    center: Vec2;
     radius: number;
     fill?: ColorSelection;
     stroke?: Stroke;
   }) {
     this.context.beginPath();
-    this.context.arc(origin.x, origin.y, radius, 0, Math.PI * 2);
+    this.context.arc(
+      inputs.center.x,
+      inputs.center.y,
+      inputs.radius,
+      0,
+      Math.PI * 2,
+    );
     this.context.closePath();
-    this.draw(stroke, fill);
+    this.draw(inputs.stroke, inputs.fill);
   }
 
-  // TODO: Expand Rect to also handle rounded corners. Probably want to take advantage of Path API once written.
-  rect({
-    point,
-    height,
-    width,
-    stroke,
-    fill,
-  }: {
+  // TODO: Expand rect to also handle rounded corners. Probably want to take advantage of Path API once written.
+  rect(inputs: {
     point: Vec2;
     height: number;
     width: number;
@@ -89,60 +85,104 @@ export default class Draw {
   }) {
     // Map all corners except the start
     const corners = [
-      point.add(new Vec2(width, 0)),
-      point.add(new Vec2(width, height)),
-      point.add(new Vec2(0, height)),
+      inputs.point.add(new Vec2(inputs.width, 0)),
+      inputs.point.add(new Vec2(inputs.width, inputs.height)),
+      inputs.point.add(new Vec2(0, inputs.height)),
     ];
 
     this.context.beginPath();
-    this.context.moveTo(point.x, point.y);
+    this.context.moveTo(inputs.point.x, inputs.point.y);
     corners.forEach((corner) => {
       // Move to each corner
       this.context.lineTo(corner.x, corner.y);
     });
     this.context.closePath();
+    this.draw(inputs.stroke, inputs.fill);
+  }
+
+  line(inputs: {
+    start: Vec2;
+    end: Vec2;
+    stroke?: Stroke;
+    fill?: ColorSelection;
+  }) {
+    this.context.beginPath();
+    this.context.lineTo(inputs.start.x, inputs.start.y);
+    this.context.closePath();
+    this.draw(inputs.stroke, inputs.fill);
+  }
+
+  bezier2(inputs: {
+    start: Vec2;
+    control: Vec2;
+    end: Vec2;
+    stroke?: Stroke;
+    fill?: ColorSelection;
+  }) {
+    const { start, control, end, stroke, fill } = inputs;
+    this.context.beginPath();
+    this.context.moveTo(start.x, start.y);
+    this.context.quadraticCurveTo(control.x, control.y, end.x, end.y);
+    this.context.closePath();
     this.draw(stroke, fill);
   }
 
-  path({
-    path,
-    fill,
-    stroke,
-    close = false,
-  }: {
+  bezier3(inputs: {
+    start: Vec2;
+    control1: Vec2;
+    control2: Vec2;
+    end: Vec2;
+    stroke?: Stroke;
+    fill?: ColorSelection;
+  }) {
+    const { start, control1, control2, end, stroke, fill } = inputs;
+    this.context.beginPath();
+    this.context.moveTo(start.x, start.y);
+    this.context.bezierCurveTo(
+      control1.x,
+      control1.y,
+      control2.x,
+      control2.y,
+      end.x,
+      end.y,
+    );
+    this.context.closePath();
+    this.draw(stroke, fill);
+  }
+
+  path(inputs: {
     path: Path;
     fill?: ColorSelection;
     stroke?: Stroke;
     close?: boolean;
   }) {
+    const { path, fill, stroke, close = false } = inputs;
     this.context.beginPath();
     this.context.moveTo(path.start.x, path.start.y);
     path.segments.forEach((segment) => {
       switch (segment.type) {
-        case 'MOVE':
+        case SegmentType.Move:
           this.context.moveTo(segment.point.x, segment.point.y);
           break;
-        case 'LINE':
+        case SegmentType.Line:
           this.context.lineTo(segment.point.x, segment.point.y);
           break;
-        case 'BEZIER2':
-          const bez2 = segment as Bezier2Segment;
+        case SegmentType.Bezier2:
           this.context.quadraticCurveTo(
-            bez2.control.x,
-            bez2.control.y,
-            bez2.point.x,
-            bez2.point.y,
+            segment.control.x,
+            segment.control.y,
+            segment.point.x,
+            segment.point.y,
           );
           break;
-        case 'BEZIER3':
-          const bez3 = segment as Bezier3Segment;
+        case SegmentType.Bezier3:
           this.context.bezierCurveTo(
-            bez3.control1.x,
-            bez3.control1.y,
-            bez3.control2.x,
-            bez3.control2.y,
-            bez3.point.x,
-            bez3.point.y,
+            segment.control1.x,
+            segment.control1.y,
+            segment.control2.x,
+            segment.control2.y,
+            segment.point.x,
+            segment.point.y,
           );
           break;
       }
