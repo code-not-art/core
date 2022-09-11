@@ -1,4 +1,4 @@
-import { Vec2 } from '../math';
+import Vec2 from '../math/Vec2';
 import BlendMode from './BlendMode';
 import Draw, { ColorSelection } from './Draw';
 

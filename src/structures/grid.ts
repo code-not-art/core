@@ -1,4 +1,4 @@
-import { Vec2 } from '../math';
+import Vec2 from '../math/Vec2';
 import { repeat } from '../utils';
 export type GridTile = {
   uv: Vec2; // uv coords of center, from 0-1
