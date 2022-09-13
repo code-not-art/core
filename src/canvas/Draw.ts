@@ -108,7 +108,6 @@ export default class Draw {
   }) {
     this.context.beginPath();
     this.context.lineTo(inputs.start.x, inputs.start.y);
-    this.context.closePath();
     this.draw(inputs.stroke, inputs.fill);
   }
 
@@ -123,7 +122,6 @@ export default class Draw {
     this.context.beginPath();
     this.context.moveTo(start.x, start.y);
     this.context.quadraticCurveTo(control.x, control.y, end.x, end.y);
-    this.context.closePath();
     this.draw(stroke, fill);
   }
 
@@ -146,7 +144,6 @@ export default class Draw {
       end.x,
       end.y,
     );
-    this.context.closePath();
     this.draw(stroke, fill);
   }
 
@@ -186,6 +183,23 @@ export default class Draw {
           );
           break;
       }
+    });
+    if (close) {
+      this.context.closePath();
+    }
+    this.draw(stroke, fill);
+  }
+
+  points(inputs: {
+    points: Vec2[];
+    close?: boolean;
+    stroke?: Stroke;
+    fill?: ColorSelection;
+  }) {
+    const { points, close, stroke, fill } = inputs;
+    this.context.beginPath();
+    points.forEach((point) => {
+      this.context.lineTo(point.x, point.y);
     });
     if (close) {
       this.context.closePath();
