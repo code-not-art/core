@@ -106,9 +106,11 @@ export default class Draw {
     stroke?: Stroke;
     fill?: ColorSelection;
   }) {
+    const { start, end, stroke, fill } = inputs;
     this.context.beginPath();
-    this.context.lineTo(inputs.start.x, inputs.start.y);
-    this.draw(inputs.stroke, inputs.fill);
+    this.context.moveTo(start.x, start.y);
+    this.context.lineTo(end.x, end.y);
+    this.draw(stroke, fill);
   }
 
   bezier2(inputs: {
