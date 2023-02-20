@@ -1,4 +1,5 @@
 import * as openSimplex from 'open-simplex-noise';
+export { default as curl } from './curl';
 
 export type Noise2D = (x: number, y: number) => number;
 export type Noise3D = (x: number, y: number, z: number) => number;
