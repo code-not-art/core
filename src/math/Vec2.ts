@@ -6,15 +6,27 @@ class Vec2 {
   x: number;
   y: number;
 
-  constructor(x: number, y: number) {
+  /**
+   * Vec2 constructor. If only one number is passed in, the class property y will be set to the same value as x.
+   * @example specify single parameter
+   * new Vec2(10)
+   * // same as Vec2(10,10)
+   * @param x
+   * @param y Optional, if ommitted, use same x value for both x and y
+   */
+  constructor(x: number, y?: number) {
     this.x = x;
-    this.y = y;
+    this.y = y === undefined ? x : y;
   }
 
   /* ===== Properties ===== */
   magnitude() {
     return Math.sqrt(this.x * this.x + this.y * this.y);
   }
+  /**
+   *
+   * @returns Angle in radians of the vector's rotation from 0. Assumes vector is cartesian coordinates.
+   */
   angle() {
     return Math.atan2(this.y, this.x);
   }
@@ -100,7 +112,7 @@ class Vec2 {
     return new Vec2(Math.cos(this.y) * this.x, Math.sin(this.y) * this.x);
   }
 
-  // ===== Some generators for common simple vectors
+  // ===== Static generators for common simple vectors
 
   /**
    * Vec2 for the origin of the plane. Shortcut for `new Vec2(0, 0)`
@@ -132,6 +144,20 @@ class Vec2 {
    */
   static ones() {
     return new Vec2(1, 1);
+  }
+
+  /**
+   * Create a new Vec2 based on another Vec2 or a single number.
+   *
+   * For a Vec2 argument, this will return a new Vec2 with the same x and y values as the provided Vec2.
+   * For a number argument, this will return a new Vec2 with both x and y equal to the provided number.
+   */
+  static from(prototype: Vec2 | number) {
+    if (prototype instanceof Vec2) {
+      return new Vec2(prototype.x, prototype.y);
+    } else {
+      return new Vec2(prototype);
+    }
   }
 }
 export default Vec2;
