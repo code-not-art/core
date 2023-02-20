@@ -113,7 +113,7 @@ class Random {
   }
 
   float(min: number, max: number, distribution?: Distribution): number {
-    return this.next(distribution) * (max - min + 1) + min;
+    return this.next(distribution) * (max - min) + min;
   }
 
   angle(distribution?: Distribution): number {
