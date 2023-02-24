@@ -1,4 +1,4 @@
-export { default as Canvas, CanvasTransform } from './canvas';
+export * from './canvas';
 export { default as Color } from './color';
 export * as Constants from './constants';
 export { default as Gradient } from './color/Gradient';
