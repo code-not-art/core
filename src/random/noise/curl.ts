@@ -1,12 +1,12 @@
-import { Noise3D, Noise4D } from '.';
+import { Noise2D, Noise3D, Noise4D } from '.';
 import Vec2 from '../../math/Vec2';
 
 /**
- * 2d curl angle from 3d or 4d noise
+ * 2d curl angle from noise
  */
 function curl(
   position: Vec2,
-  noise: Noise3D | Noise4D,
+  noise: Noise2D | Noise3D | Noise4D,
   config: {
     z?: number;
     w?: number;
