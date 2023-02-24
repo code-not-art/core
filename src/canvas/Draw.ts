@@ -2,6 +2,8 @@ import Vec2 from '../math/Vec2';
 import Color from '../color';
 import Path, { SegmentType } from '../structures/Path';
 import tinycolor from 'tinycolor2';
+import { Brush } from './Brush';
+import { TAU } from '../constants';
 
 export type ColorSelection = Color | string | tinycolor.Instance;
 
@@ -21,7 +23,45 @@ export type Stroke = {
   cap?: 'round' | 'butt' | 'square';
 };
 
-export default class Draw {
+type Styles = {
+  fill?: ColorSelection;
+  stroke?: Stroke;
+  brush?: Brush;
+};
+
+export type Bezier2 = {
+  start: Vec2;
+  control: Vec2;
+  end: Vec2;
+};
+
+export type Bezier3 = {
+  start: Vec2;
+  control1: Vec2;
+  control2: Vec2;
+  end: Vec2;
+};
+
+export type Circle = {
+  center: Vec2;
+  radius: number;
+};
+
+export type Line = {
+  start: Vec2;
+  end: Vec2;
+};
+
+/**
+ * Point is top left of rect
+ */
+export type Rect = {
+  point: Vec2;
+  height: number;
+  width: number;
+};
+
+export class Draw {
   context: CanvasRenderingContext2D;
   constructor(context: CanvasRenderingContext2D) {
     this.context = context;
@@ -57,32 +97,16 @@ export default class Draw {
   }
 
   // -- Different geometries below
-  circle(inputs: {
-    center: Vec2;
-    radius: number;
-    fill?: ColorSelection;
-    stroke?: Stroke;
-  }) {
+  circle(inputs: Circle & Styles) {
     this.context.beginPath();
-    this.context.arc(
-      inputs.center.x,
-      inputs.center.y,
-      inputs.radius,
-      0,
-      Math.PI * 2,
-    );
+    this.context.arc(inputs.center.x, inputs.center.y, inputs.radius, 0, TAU);
     this.context.closePath();
     this.draw(inputs.stroke, inputs.fill);
+    inputs.brush && inputs.brush({ path: Path.fromCircle(inputs), draw: this });
   }
 
   // TODO: Expand rect to also handle rounded corners. Probably want to take advantage of Path API once written.
-  rect(inputs: {
-    point: Vec2;
-    height: number;
-    width: number;
-    stroke?: Stroke;
-    fill?: ColorSelection;
-  }) {
+  rect(inputs: Rect & Styles) {
     // Map all corners except the start
     const corners = [
       inputs.point.add(new Vec2(inputs.width, 0)),
@@ -98,43 +122,28 @@ export default class Draw {
     });
     this.context.closePath();
     this.draw(inputs.stroke, inputs.fill);
+    inputs.brush && inputs.brush({ path: Path.fromRect(inputs), draw: this });
   }
 
-  line(inputs: {
-    start: Vec2;
-    end: Vec2;
-    stroke?: Stroke;
-    fill?: ColorSelection;
-  }) {
+  line(inputs: Line & Styles) {
     const { start, end, stroke, fill } = inputs;
     this.context.beginPath();
     this.context.moveTo(start.x, start.y);
     this.context.lineTo(end.x, end.y);
     this.draw(stroke, fill);
+    inputs.brush && inputs.brush({ path: Path.fromLine(inputs), draw: this });
   }
 
-  bezier2(inputs: {
-    start: Vec2;
-    control: Vec2;
-    end: Vec2;
-    stroke?: Stroke;
-    fill?: ColorSelection;
-  }) {
+  bezier2(inputs: Bezier2 & Styles) {
     const { start, control, end, stroke, fill } = inputs;
     this.context.beginPath();
     this.context.moveTo(start.x, start.y);
     this.context.quadraticCurveTo(control.x, control.y, end.x, end.y);
     this.draw(stroke, fill);
+    inputs.brush && inputs.brush({ path: Path.fromBez2(inputs), draw: this });
   }
 
-  bezier3(inputs: {
-    start: Vec2;
-    control1: Vec2;
-    control2: Vec2;
-    end: Vec2;
-    stroke?: Stroke;
-    fill?: ColorSelection;
-  }) {
+  bezier3(inputs: Bezier3 & Styles) {
     const { start, control1, control2, end, stroke, fill } = inputs;
     this.context.beginPath();
     this.context.moveTo(start.x, start.y);
@@ -147,14 +156,15 @@ export default class Draw {
       end.y,
     );
     this.draw(stroke, fill);
+    inputs.brush && inputs.brush({ path: Path.fromBez3(inputs), draw: this });
   }
 
-  path(inputs: {
-    path: Path;
-    fill?: ColorSelection;
-    stroke?: Stroke;
-    close?: boolean;
-  }) {
+  path(
+    inputs: {
+      path: Path;
+      close?: boolean;
+    } & Styles,
+  ) {
     const { path, fill, stroke, close = false } = inputs;
     this.context.beginPath();
     this.context.moveTo(path.start.x, path.start.y);
@@ -165,6 +175,19 @@ export default class Draw {
           break;
         case SegmentType.Line:
           this.context.lineTo(segment.point.x, segment.point.y);
+          break;
+        case SegmentType.Arc:
+          const startAngle = segment.start.diff(segment.center).angle();
+          const endAngle = startAngle - segment.angle;
+          const counterClockwise = segment.angle >= 0;
+          this.context.arc(
+            segment.center.x,
+            segment.center.y,
+            segment.radius,
+            startAngle,
+            endAngle,
+            counterClockwise,
+          );
           break;
         case SegmentType.Bezier2:
           this.context.quadraticCurveTo(
@@ -184,12 +207,19 @@ export default class Draw {
             segment.point.y,
           );
           break;
+        default:
+          console.warn(
+            `core.draw.path`,
+            `segment switch hit default due to unhandled segment type:`,
+            segment,
+          );
       }
     });
     if (close) {
       this.context.closePath();
     }
     this.draw(stroke, fill);
+    inputs.brush && inputs.brush({ path: inputs.path, draw: this });
   }
 
   points(inputs: {
@@ -197,6 +227,7 @@ export default class Draw {
     close?: boolean;
     stroke?: Stroke;
     fill?: ColorSelection;
+    //brush?: Brush TODO: Brush
   }) {
     const { points, close, stroke, fill } = inputs;
     this.context.beginPath();
