@@ -227,16 +227,11 @@ export class Draw {
     close?: boolean;
     stroke?: Stroke;
     fill?: ColorSelection;
-    //brush?: Brush TODO: Brush
+    brush?: Brush;
   }) {
-    const { points, close, stroke, fill } = inputs;
-    this.context.beginPath();
-    points.forEach((point) => {
-      this.context.lineTo(point.x, point.y);
-    });
-    if (close) {
-      this.context.closePath();
-    }
-    this.draw(stroke, fill);
+    const { points } = inputs;
+    const path = new Path(points[0]);
+    points.slice(1).forEach((point) => path.line(point));
+    this.path({ ...inputs, path });
   }
 }
