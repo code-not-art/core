@@ -5,5 +5,5 @@ export { default as Gradient } from './color/Gradient';
 export { default as Vec2 } from './math/Vec2';
 export { default as Random, RandomContext } from './random';
 export * as Noise from './random/noise';
-export * as Structures from './structures';
+export * from './structures';
 export * as Utils from './utils';

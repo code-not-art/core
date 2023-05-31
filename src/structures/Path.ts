@@ -51,7 +51,7 @@ export type Segment = (
   end: Vec2;
 };
 
-export default class Path {
+export class Path {
   start: Vec2;
   segments: Segment[];
   constructor(start: Vec2) {
@@ -122,6 +122,52 @@ export default class Path {
 
     this.segments.push({ ...segment, start: this.getEnd(), end: destination });
     return this;
+  }
+
+  getBounds(): { min: Vec2; max: Vec2 } {
+    let min = Vec2.from(this.start);
+    let max = Vec2.from(this.start);
+    this.segments.forEach((point) => {
+      if (point.end.x < min.x) {
+        min.x = point.end.x;
+      }
+      if (point.end.y < min.y) {
+        min.y = point.end.y;
+      }
+      if (point.end.x > max.x) {
+        max.x = point.end.x;
+      }
+      if (point.end.y > max.y) {
+        max.y = point.end.y;
+      }
+    });
+    return { min, max };
+  }
+
+  getLength(): number {
+    let length = 0;
+    this.segments.forEach((segment) => {
+      switch (segment.type) {
+        case SegmentType.Line:
+          length += segment.end.distance(segment.start);
+          break;
+        case SegmentType.Move:
+          // no distance
+          break;
+        case SegmentType.Arc:
+          length += (TAU * segment.radius) / segment.angle;
+          break;
+        case SegmentType.Bezier2:
+          // TODO: how to calculate length of bezier curve
+          length += segment.end.distance(segment.start);
+          break;
+        case SegmentType.Bezier3:
+          // TODO: how to calculate length of bezier curve
+          length += segment.end.distance(segment.start);
+          break;
+      }
+    });
+    return length;
   }
 
   static fromCircle(circle: Circle): Path {
