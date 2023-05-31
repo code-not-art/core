@@ -1,4 +1,4 @@
-enum BlendMode {
+export enum BlendMode {
   default = 'source-over',
   sourceOver = 'source-over',
   sourceIn = 'source-in',
@@ -26,5 +26,3 @@ enum BlendMode {
   color = 'color',
   luminosity = 'luminosity',
 }
-
-export default BlendMode;

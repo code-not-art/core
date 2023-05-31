@@ -1,6 +1,6 @@
 import Vec2 from '../math/Vec2';
-import BlendMode from './BlendMode';
-import { Draw, ColorSelection } from './Draw';
+import { BlendMode } from './BlendMode';
+import { Draw, FillSelection } from './Draw';
 
 export type CanvasTransform = {
   push: () => CanvasTransform;
@@ -113,16 +113,16 @@ export class Canvas {
 
   /**
    * Fill the entire canvas with a single color
-   * @param color
+   * @param fill
    */
-  fill = (color: ColorSelection) => {
+  fill = (fill: FillSelection) => {
     const storedTransform = this.context.getTransform();
     this.context.resetTransform();
     this.draw.rect({
       point: Vec2.origin(),
       height: this.get.height(),
       width: this.get.width(),
-      fill: color,
+      fill: fill,
     });
     this.context.setTransform(storedTransform);
   };
@@ -189,29 +189,6 @@ export class Canvas {
     layer: Canvas,
     options: { blendMode?: BlendMode; position?: Vec2; rotation?: number } = {},
   ) {
-    const { blendMode, position, rotation } = options;
-
-    const tempBlend = this.context.globalCompositeOperation;
-    this.context.globalCompositeOperation = blendMode || BlendMode.default;
-
-    const storedTransform = this.context.getTransform();
-    this.context.resetTransform();
-    if (rotation) {
-      this.context.rotate(rotation);
-    }
-
-    const x = position ? position.x : 0;
-    const y = position ? position.y : 0;
-
-    this.context.drawImage(
-      layer.canvas,
-      x,
-      y,
-      layer.canvas.width,
-      layer.canvas.height,
-    );
-
-    this.context.setTransform(storedTransform);
-    this.context.globalCompositeOperation = tempBlend;
+    this.draw.stamp({ source: layer, ...options });
   }
 }
