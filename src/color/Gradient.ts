@@ -1,5 +1,5 @@
-import { clamp, repeat } from '../utils';
-import Color from './';
+import { clamp, repeat } from '../utils/index.js';
+import Color from './Color.js';
 
 /**
  * Create a gradient object out of any number of colors.

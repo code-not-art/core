@@ -1,6 +1,6 @@
-import Vec2 from '../math/Vec2';
-import { BlendMode } from './BlendMode';
-import { Draw, FillSelection } from './Draw';
+import Vec2 from '../math/Vec2.js';
+import { BlendMode } from './BlendMode.js';
+import { Draw, FillSelection } from './Draw.js';
 
 export type CanvasTransform = {
   push: () => CanvasTransform;

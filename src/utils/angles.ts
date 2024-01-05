@@ -1,4 +1,4 @@
-import { TAU } from '../constants';
+import { TAU } from '../constants.js';
 // Degree and Radian conversion
 export function toDegrees(rads: number): number {
   return (rads / TAU) * 360;

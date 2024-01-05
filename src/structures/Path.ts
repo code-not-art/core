@@ -1,6 +1,6 @@
-import { Bezier2, Bezier3, Circle, Line, Rect } from '../canvas';
-import { TAU } from '../constants';
-import Vec2 from '../math/Vec2';
+import { Bezier2, Bezier3, Circle, Line, Rect } from '../canvas/index.js';
+import { TAU } from '../constants.js';
+import Vec2 from '../math/Vec2.js';
 
 export enum SegmentType {
   Move = 'MOVE', // Jumps the position, no line drawn

@@ -1,5 +1,5 @@
-import Color from '.';
-import { clamp } from '../utils';
+import Color from './Color.js';
+import { clamp } from '../utils/index.js';
 
 /**
  * Mix two colors together in any ratio

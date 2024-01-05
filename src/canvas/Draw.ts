@@ -1,11 +1,12 @@
-import Vec2 from '../math/Vec2';
-import Color from '../color';
-import { Path, SegmentType } from '../structures/Path';
 import tinycolor from 'tinycolor2';
-import { Brush } from './Brush';
-import { TAU } from '../constants';
-import { Canvas } from './Canvas';
-import { BlendMode } from './BlendMode';
+
+import { Color } from '../color/index.js';
+import { TAU } from '../constants.js';
+import Vec2 from '../math/Vec2.js';
+import { Path, SegmentType } from '../structures/Path.js';
+import { BlendMode } from './BlendMode.js';
+import { Brush } from './Brush.js';
+import { Canvas } from './Canvas.js';
 
 export type ColorSelection = Color | string | tinycolor.Instance;
 export type FillSelection = ColorSelection | CanvasGradient | CanvasPattern;

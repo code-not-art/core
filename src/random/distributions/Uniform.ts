@@ -1,4 +1,4 @@
-import Distribution from '.';
+import Distribution from '../Distribution.js';
 
 const Uniform: Distribution = (x: number) => x;
 
