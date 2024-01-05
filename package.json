@@ -44,9 +44,5 @@
     "tinycolor2": "^1.4.2",
     "wink-pos-tagger": "^2.2.2"
   },
-  "prettier": {
-    "trailingComma": "all",
-    "singleQuote": true,
-    "arrowFunctionParentheses": "always"
-  }
+  "prettier": {}
 }
