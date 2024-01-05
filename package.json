@@ -1,11 +1,15 @@
 {
   "name": "@code-not-art/core",
-  "version": "0.6.0",
+  "version": "1.0.0",
   "description": "HTML 5 Canvas Drawing Library",
   "type": "module",
   "exports": "./dist/index.js",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "typings": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc"
   },
