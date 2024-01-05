@@ -1,4 +1,4 @@
-import Distribution from '.';
+import Distribution from '../Distribution.js';
 
 /**
  * Generator for a Sinusoidal distribution with values centered on 0.5 and ranging from 0 to 1 (instead of from -1 to 1).

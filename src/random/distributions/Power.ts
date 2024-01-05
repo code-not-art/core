@@ -1,4 +1,4 @@
-import Distribution from '.';
+import Distribution from '../Distribution.js';
 
 /**
  * Generator for a Power distribution

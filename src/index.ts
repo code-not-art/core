@@ -1,9 +1,8 @@
-export * from './canvas';
-export { default as Color } from './color';
-export * as Constants from './constants';
-export { default as Gradient } from './color/Gradient';
-export { default as Vec2 } from './math/Vec2';
-export { default as Random, RandomContext } from './random';
-export * as Noise from './random/noise';
-export * from './structures';
-export * as Utils from './utils';
+export * from './canvas/index.js';
+export * from './color/index.js';
+export * as Constants from './constants.js';
+export * from './math/index.js';
+export * from './random/index.js';
+export * as Noise from './random/noise/index.js';
+export * from './structures/index.js';
+export * as Utils from './utils/index.js';

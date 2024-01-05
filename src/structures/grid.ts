@@ -1,5 +1,5 @@
-import Vec2 from '../math/Vec2';
-import { repeat } from '../utils';
+import Vec2 from '../math/Vec2.js';
+import { repeat } from '../utils/index.js';
 export type GridTile = {
   uv: Vec2; // uv coords of center, from 0-1
   origin: Vec2; // top left coords
