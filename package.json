@@ -47,6 +47,5 @@
     "seed-random": "^2.2.0",
     "tinycolor2": "^1.4.2",
     "wink-pos-tagger": "^2.2.2"
-  },
-  "prettier": {}
+  }
 }
