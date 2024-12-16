@@ -8,8 +8,7 @@ import Distribution from '../Distribution.js';
  * rng.next( Power(2) );
  * @returns {Distribution}
  */
-const Power: (phase: number, period: number) => Distribution =
-  (power: number) => (x: number) =>
-    Math.pow(x, power <= 0 ? 1 : power);
+const Power: (phase: number) => Distribution = (power: number) => (x: number) =>
+  Math.pow(x, power <= 0 ? 1 : power);
 
 export default Power;

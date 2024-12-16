@@ -24,7 +24,10 @@ export const grid = (options: GridOptions): GridTile[] => {
     .scale(new Vec2(1 / options.columns, 1 / options.rows));
   repeat(options.rows, (row) => {
     repeat(options.columns, (column) => {
-      const uv = new Vec2(column / options.columns, row / options.rows);
+      const uv = new Vec2(
+        column / (options.columns - 1 || 1),
+        row / (options.rows - 1 || 1),
+      );
       const origin = uv.scale(options.size || 1);
       output.push({
         uv,
