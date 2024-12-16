@@ -1,3 +1,5 @@
+import { Constants } from '../index.js';
+
 /**
  * Two dimensional vector.
  * Most methods treat the vector as though it is in cartesian space, with coordinates (x, y). The two conversion methods change (x, y) coordinates to (radius, angle) where the angle, in radians, is from the x-axis to the vector.
@@ -47,13 +49,24 @@ class Vec2 {
       return new Vec2(this.x - value, this.y - value);
     }
   }
+  invert(): Vec2 {
+    return this.scale(-1);
+  }
 
-  scale(value: number | Vec2): Vec2 {
-    if (typeof value === 'object') {
-      return new Vec2(this.x * value.x, this.y * value.y);
-    } else {
-      return new Vec2(this.x * value, this.y * value);
-    }
+  /**
+   * Multiply the x and y values of the Vec2. If the factor is a number, then x and y are scaled by the same
+   * amount. If a Vec2 is provided then the x and y will be scaled based on the x and y values of the factor.
+   *
+   * Scaling is done from the origin by default, but if another center is provided than the distance from the
+   * given center is scaled instead, allowing a vector to be expanded from a point.
+   */
+  scale(factor: number | Vec2, center = Vec2.zero()): Vec2 {
+    const vectorFactor =
+      typeof factor === 'number' ? new Vec2(factor, factor) : factor;
+    const diff = this.diff(center);
+    return new Vec2(diff.x * vectorFactor.x, diff.y * vectorFactor.y).add(
+      center,
+    );
   }
 
   dot(vector: Vec2): number {
@@ -69,6 +82,12 @@ class Vec2 {
     return this.x * vector.y - this.y * vector.x;
   }
 
+  /**
+   * Checks if this vector fits within a given range.
+   * @param max
+   * @param min Defaults to the origin (0,0)
+   * @returns
+   */
   within(max: Vec2, min?: Vec2): boolean {
     const _min = min || Vec2.origin();
     return (
@@ -86,18 +105,32 @@ class Vec2 {
     return new Vec2(this.x / M, this.y / M);
   }
   /**
-   *
+   * Rotates a Vec2, assumed to be in cartesian coordinates, around a pivot point.
+   * If no pivot point is provided, this rotates around the origin `(0, 0)`
    * @param angle in radians
    * @returns
    */
-  rotate(angle: number): Vec2 {
-    return this.toPolar().add(new Vec2(0, angle)).toCoords();
+  rotate(angle: number, pivot = Vec2.zero()): Vec2 {
+    return this.diff(pivot)
+      .toPolar()
+      .add(new Vec2(0, angle))
+      .toCoords()
+      .add(pivot);
   }
   withMagnitude = (magnitude: number) => {
     return this.normalize().scale(magnitude);
   };
   withAngle = (angle: number) => {
     return Vec2.unit().rotate(angle).scale(this.magnitude());
+  };
+
+  get = {
+    /**
+     * Returns the unit vector normal to this vector.
+     * This is equivalent to a 90 degree rotation.
+     * @returns
+     */
+    normal: (): Vec2 => this.rotate(Constants.TAU / 4).normalize(),
   };
 
   /* ===== Convert ===== */
@@ -162,6 +195,29 @@ class Vec2 {
     } else {
       return new Vec2(prototype);
     }
+  }
+
+  /**
+   * Find the minimum vector defined by the bounding box of a list of Vec2.
+   * Returns a Vec2 with the minimum x and y of the provided input vectors.
+   * @param inputs
+   */
+  static min(...inputs: Vec2[]): Vec2 {
+    return new Vec2(
+      Math.min(...inputs.map((v) => v.x)),
+      Math.min(...inputs.map((v) => v.y)),
+    );
+  }
+  /**
+   * Find the maximum vector defined by the bounding box of a list of Vec2.
+   * Returns a Vec2 with the maximum x and y of the provided input vectors.
+   * @param inputs
+   */
+  static max(...inputs: Vec2[]): Vec2 {
+    return new Vec2(
+      Math.max(...inputs.map((v) => v.x)),
+      Math.max(...inputs.map((v) => v.y)),
+    );
   }
 }
 export default Vec2;
