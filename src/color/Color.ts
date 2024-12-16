@@ -8,11 +8,18 @@ class Color {
   private _color;
 
   /**
-   * h = hue, is 0 to 360, default random
-   * s = saturation, is 0 to 100, default random
-   * v = value, is 0 to 100, default random
-   * a = alpha, is 0 to 1, default 1
    * @param options
+   * h = hue, is 1 to 360 - default: random
+   *
+   * s = saturation, is 1 to 100 - default: random
+   *
+   * v = value, is 1 to 100 - default: random
+   *
+   * a = alpha, is 0 to 1 - default: 1
+   *
+   * seed = any string - default: random
+   *
+   * rng = existing Random generator - default: new Random generator based on the seed value
    */
   constructor(
     options?:
@@ -29,7 +36,7 @@ class Color {
     if (options === undefined) {
       this.seed = new Random(`Random Color Seed`).next().toString();
       const _rng = new Random(`Color ${this.seed}`, this.seed);
-      const hsv = `hsva(${_rng.float(0, 360)}, ${_rng.float(
+      const hsv = `hsva(${_rng.float(1, 360)}, ${_rng.float(
         0,
         100,
       )}%, ${_rng.float(0, 100)}%, 1)`;
