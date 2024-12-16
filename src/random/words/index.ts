@@ -1,10 +1,12 @@
-const words = require('a-set-of-english-words') as Set<string>;
+import words from 'a-set-of-english-words';
+import posTagger from 'wink-pos-tagger';
+const tagger = new posTagger();
+
 const wordList = Array.from(words);
-const tagger = require('wink-pos-tagger')();
 
 const nounSymbols = ['NN', 'NNP', 'NNS', 'NNPS'];
 
-const adverbSymbols = ['RB']; // Removing awkward comparor adverbs (-er and -est): [, 'RBS', 'RBR']
+const adverbSymbols = ['RB']; // Removing awkward comparator adverbs (-er and -est): [, 'RBS', 'RBR']
 
 const adjectiveSymbols = ['JJ', 'JJS', 'JJR'];
 

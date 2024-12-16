@@ -1,7 +1,7 @@
 import srng from 'seed-random';
 
 import { TAU } from '../constants.js';
-import { Color, Vec2 } from '../index.js';
+import { Color, Vec2, type Rectangle } from '../index.js';
 import { array, repeat } from '../utils/index.js';
 import Distribution from './Distribution.js';
 import { RandomContext } from './RandomContext.js';
@@ -173,12 +173,22 @@ export class Random {
   }
 
   /**
-   * Random unit vector
+   * Random Vector. Default will produce a random unit vector (lenght 1, random direction).
+   * If bounds are provided, a random point that fits that rectangle will be returned.
+   * @param
    * @param distribution {Distribution} is applied to the random angle applied to the unit vector
    * @returns {Vec2}
    */
-  vec2(distribution?: Distribution): Vec2 {
+  vec2(bounds?: Rectangle, distribution?: Distribution): Vec2 {
+    this.push('vec2 generation');
+    if (bounds) {
+      return new Vec2(
+        this.float(bounds.min.x, bounds.max.x, distribution),
+        this.float(bounds.min.y, bounds.max.y, distribution),
+      );
+    }
     return Vec2.unit().rotate(this.angle(distribution));
+    this.pop();
   }
 
   word(type?: 'noun' | 'adjective' | 'adverb') {
@@ -209,7 +219,7 @@ export class Random {
     };
   }
 
-  chooseOne<T>(items: T[]): T {
+  chooseOne<T>(items: Array<T> | ReadonlyArray<T>): T {
     return items[this.int(0, items.length - 1)];
   }
 
@@ -236,7 +246,7 @@ export class Random {
   }
 
   shuffle<T>(items: T[]): T[] {
-    const output = items.map((i) => i);
+    const output = [...items];
     repeat(output.length, (i) => {
       const swap = this.int(i, output.length - 1);
       const temp = output[i];
