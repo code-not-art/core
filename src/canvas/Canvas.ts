@@ -77,6 +77,19 @@ export class Canvas {
      */
     aspectRatio: () => this.canvas.width / this.canvas.height,
     size: () => new Vec2(this.canvas.width, this.canvas.height),
+    /**
+     * Get a Vec2 to any position on the canvas based on x and y arguments between 0 and 1.
+     * For example, to get the position of the point one-quarter the distance along the canvas
+     * horizontally, and three-quarters position vertically, you can use `canvas.get.position(0.25, 0.75).
+     *
+     * If passed arguments outside of the range 0-1, the vector returned will have coordinates outside of
+     * of the canvas area.
+     *
+     * @param x number from 0-1 returns x-coordinate equal to that ratio of the canvas height
+     * @param y number from 0-1, returns y-coordinate equal to that ratio of the canvas height
+     * @returns {Vec2}
+     */
+    position: (x: number, y: number) => this.get.size().scale(new Vec2(x, y)),
 
     /**
      * Center of the canvas (width/2, height/2)
