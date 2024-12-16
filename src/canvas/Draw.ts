@@ -3,10 +3,12 @@ import tinycolor from 'tinycolor2';
 import { Color } from '../color/index.js';
 import { TAU } from '../constants.js';
 import Vec2 from '../math/Vec2.js';
-import { Path, SegmentType } from '../structures/Path.js';
+import { Path } from '../structures/path/Path.js';
 import { BlendMode } from './BlendMode.js';
 import { Brush } from './Brush.js';
 import { Canvas } from './Canvas.js';
+import { SegmentTypes } from '../structures/path/PathSegment.js';
+import { Rectangle, RectangleConfig } from '../structures/Rectangle.js';
 
 export type ColorSelection = Color | string | tinycolor.Instance;
 export type FillSelection = ColorSelection | CanvasGradient | CanvasPattern;
@@ -63,15 +65,6 @@ export type Line = {
   end: Vec2;
 };
 
-/**
- * Point is top left of rect
- */
-export type Rect = {
-  point: Vec2;
-  height: number;
-  width: number;
-};
-
 export class Draw {
   context: CanvasRenderingContext2D;
   constructor(context: CanvasRenderingContext2D) {
@@ -107,41 +100,44 @@ export class Draw {
   }
 
   // -- Different geometries below
-  circle(inputs: Circle & Styles) {
+  circle(circle: Circle, styles: Styles) {
     this.context.beginPath();
-    this.context.arc(inputs.center.x, inputs.center.y, inputs.radius, 0, TAU);
+    this.context.arc(circle.center.x, circle.center.y, circle.radius, 0, TAU);
     this.context.closePath();
-    this.draw(inputs.stroke, inputs.fill);
-    inputs.brush && inputs.brush({ path: Path.fromCircle(inputs), draw: this });
+    this.draw(styles.stroke, styles.fill);
+    styles.brush && styles.brush({ path: Path.fromCircle(circle), draw: this });
   }
 
   // TODO: Expand rect to also handle rounded corners. Probably want to take advantage of Path API once written.
-  rect(inputs: Rect & Styles) {
+  rect(rectangleConfig: Rectangle | RectangleConfig, styles: Styles) {
+    const rectangle = Rectangle(rectangleConfig);
     // Map all corners except the start
     const corners = [
-      inputs.point.add(new Vec2(inputs.width, 0)),
-      inputs.point.add(new Vec2(inputs.width, inputs.height)),
-      inputs.point.add(new Vec2(0, inputs.height)),
+      new Vec2(rectangle.max.x, rectangle.min.y),
+      rectangle.max,
+      new Vec2(rectangle.min.x, rectangle.max.y),
     ];
 
     this.context.beginPath();
-    this.context.moveTo(inputs.point.x, inputs.point.y);
+    this.context.moveTo(rectangle.min.x, rectangle.min.y);
     corners.forEach((corner) => {
       // Move to each corner
       this.context.lineTo(corner.x, corner.y);
     });
     this.context.closePath();
-    this.draw(inputs.stroke, inputs.fill);
-    inputs.brush && inputs.brush({ path: Path.fromRect(inputs), draw: this });
+    this.draw(styles.stroke, styles.fill);
+    styles.brush &&
+      styles.brush({ path: Path.fromRect(rectangleConfig), draw: this });
   }
 
-  line(inputs: Line & Styles) {
-    const { start, end, stroke, fill } = inputs;
+  line(line: Line, styles: Styles) {
+    const { start, end } = line;
+    const { stroke, fill, brush } = styles;
     this.context.beginPath();
     this.context.moveTo(start.x, start.y);
     this.context.lineTo(end.x, end.y);
     this.draw(stroke, fill);
-    inputs.brush && inputs.brush({ path: Path.fromLine(inputs), draw: this });
+    brush && brush({ path: Path.fromLine(line), draw: this });
   }
 
   bezier2(inputs: Bezier2 & Styles) {
@@ -170,26 +166,28 @@ export class Draw {
   }
 
   path(
-    inputs: {
-      path: Path;
+    path: Path,
+    config: {
       close?: boolean;
     } & Styles,
   ) {
-    const { path, fill, stroke, close = false } = inputs;
+    const { fill, stroke, close = false } = config;
     this.context.beginPath();
-    this.context.moveTo(path.start.x, path.start.y);
-    path.segments.forEach((segment) => {
+    this.context.moveTo(path.get.start().x, path.get.start().y);
+    path.get.segments().forEach((segment) => {
       switch (segment.type) {
-        case SegmentType.Move:
-          this.context.moveTo(segment.point.x, segment.point.y);
+        case SegmentTypes.Move:
+          this.context.moveTo(segment.end.x, segment.end.y);
           break;
-        case SegmentType.Line:
-          this.context.lineTo(segment.point.x, segment.point.y);
+        case SegmentTypes.Line:
+          this.context.lineTo(segment.end.x, segment.end.y);
           break;
-        case SegmentType.Arc:
+        case SegmentTypes.Arc:
           const startAngle = segment.start.diff(segment.center).angle();
-          const endAngle = startAngle - segment.angle;
-          const counterClockwise = segment.angle >= 0;
+          const counterClockwise = segment.angle <= 0;
+          const endAngle = counterClockwise
+            ? startAngle + segment.angle
+            : startAngle + segment.angle;
           this.context.arc(
             segment.center.x,
             segment.center.y,
@@ -199,22 +197,22 @@ export class Draw {
             counterClockwise,
           );
           break;
-        case SegmentType.Bezier2:
+        case SegmentTypes.Bezier2:
           this.context.quadraticCurveTo(
             segment.control.x,
             segment.control.y,
-            segment.point.x,
-            segment.point.y,
+            segment.end.x,
+            segment.end.y,
           );
           break;
-        case SegmentType.Bezier3:
+        case SegmentTypes.Bezier3:
           this.context.bezierCurveTo(
             segment.control1.x,
             segment.control1.y,
             segment.control2.x,
             segment.control2.y,
-            segment.point.x,
-            segment.point.y,
+            segment.end.x,
+            segment.end.y,
           );
           break;
         default:
@@ -229,20 +227,21 @@ export class Draw {
       this.context.closePath();
     }
     this.draw(stroke, fill);
-    inputs.brush && inputs.brush({ path: inputs.path, draw: this });
+    config.brush && config.brush({ path, draw: this });
   }
 
-  points(inputs: {
-    points: Vec2[];
-    close?: boolean;
-    stroke?: Stroke;
-    fill?: ColorSelection;
-    brush?: Brush;
-  }) {
-    const { points } = inputs;
+  points(
+    points: Vec2[],
+    styles: {
+      close?: boolean;
+      stroke?: Stroke;
+      fill?: ColorSelection;
+      brush?: Brush;
+    },
+  ) {
     const path = new Path(points[0]);
     points.slice(1).forEach((point) => path.line(point));
-    this.path({ ...inputs, path });
+    this.path(path, styles);
   }
 
   layer(options: { size?: Vec2 } = {}): Canvas {

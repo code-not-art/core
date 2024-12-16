@@ -131,12 +131,16 @@ export class Canvas {
   fill = (fill: FillSelection) => {
     const storedTransform = this.context.getTransform();
     this.context.resetTransform();
-    this.draw.rect({
-      point: Vec2.origin(),
-      height: this.get.height(),
-      width: this.get.width(),
-      fill: fill,
-    });
+    this.draw.rect(
+      {
+        corner: Vec2.origin(),
+        height: this.get.height(),
+        width: this.get.width(),
+      },
+      {
+        fill: fill,
+      },
+    );
     this.context.setTransform(storedTransform);
   };
 

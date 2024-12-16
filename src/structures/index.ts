@@ -1,2 +1,2 @@
 export * from './grid.js';
-export * from './Path.js';
+export * from './Rectangle.js';
