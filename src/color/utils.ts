@@ -9,15 +9,15 @@ import { clamp } from '../utils/index.js';
  * @returns Color
  */
 export function mix(c1: Color, c2: Color, ratio: number = 0.5): Color {
-  const clampedRatio = clamp(ratio);
+	const clampedRatio = clamp(ratio);
 
-  const hsva1 = c1.get.hsv();
-  const hsva2 = c2.get.hsv();
+	const hsva1 = c1.get.hsv();
+	const hsva2 = c2.get.hsv();
 
-  const h = hsva1.h * ratio + hsva2.h * (1 - clampedRatio);
-  const s = hsva1.s * ratio + hsva2.s * (1 - clampedRatio);
-  const v = hsva1.v * ratio + hsva2.v * (1 - clampedRatio);
-  const a = hsva1.a * ratio + hsva2.a * (1 - clampedRatio);
+	const h = hsva1.h * ratio + hsva2.h * (1 - clampedRatio);
+	const s = hsva1.s * ratio + hsva2.s * (1 - clampedRatio);
+	const v = hsva1.v * ratio + hsva2.v * (1 - clampedRatio);
+	const a = hsva1.a * ratio + hsva2.a * (1 - clampedRatio);
 
-  return new Color({ h, s, v, a });
+	return new Color({ h, s, v, a });
 }

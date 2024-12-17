@@ -7,11 +7,8 @@
  * @param options {Object}
  * @returns {number}
  */
-export function clamp(
-  value: number,
-  options: { min?: number; max?: number } = {},
-): number {
-  const min = options.min === undefined ? 0 : options.min;
-  const max = options.max === undefined ? 1 : options.max;
-  return Math.max(min, Math.min(max, value));
+export function clamp(value: number, options: { min?: number; max?: number } = {}): number {
+	const min = options.min === undefined ? 0 : options.min;
+	const max = options.max === undefined ? 1 : options.max;
+	return Math.max(min, Math.min(max, value));
 }

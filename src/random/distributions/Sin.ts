@@ -11,8 +11,7 @@ import Distribution from '../Distribution.js';
  * rng.next( Sin(0, 1) );
  * @returns {Distribution}
  */
-const Sin: (phase: number, period: number) => Distribution =
-  (phase: number, period: number) => (x: number) =>
-    (Math.sin(x * Math.PI * 2 * period + phase) + 1) / 2;
+const Sin: (phase: number, period: number) => Distribution = (phase: number, period: number) => (x: number) =>
+	(Math.sin(x * Math.PI * 2 * period + phase) + 1) / 2;
 
 export default Sin;

@@ -1,5 +1,7 @@
 {
+  "useTabs": true,
   "trailingComma": "all",
   "singleQuote": true,
-  "arrowFunctionParentheses": "always"
+  "arrowFunctionParentheses": "always",
+  "printWidth": 120
 }

@@ -11,32 +11,32 @@ const adverbSymbols = ['RB']; // Removing awkward comparator adverbs (-er and -e
 const adjectiveSymbols = ['JJ', 'JJS', 'JJR'];
 
 export function getWord(ratio: number) {
-  return wordList[Math.floor(ratio * wordList.length)];
+	return wordList[Math.floor(ratio * wordList.length)];
 }
 
 export function getWordOfPosType(ratio: number, types: string[]) {
-  let index = Math.floor(ratio * wordList.length);
-  while (true) {
-    const word = tagger.tagRawTokens([wordList[index]])[0];
-    if (types.includes(word.pos)) {
-      return word.value as string;
-    }
-    index++;
+	let index = Math.floor(ratio * wordList.length);
+	while (true) {
+		const word = tagger.tagRawTokens([wordList[index]])[0];
+		if (types.includes(word.pos)) {
+			return word.value as string;
+		}
+		index++;
 
-    // Edgecase for getting to end of list, wrap around to beginning
-    if (index >= wordList.length) {
-      index = 0;
-    }
-  }
-  return '';
+		// Edgecase for getting to end of list, wrap around to beginning
+		if (index >= wordList.length) {
+			index = 0;
+		}
+	}
+	return '';
 }
 
 export function getNoun(ratio: number) {
-  return getWordOfPosType(ratio, nounSymbols);
+	return getWordOfPosType(ratio, nounSymbols);
 }
 export function getAdverb(ratio: number) {
-  return getWordOfPosType(ratio, adverbSymbols);
+	return getWordOfPosType(ratio, adverbSymbols);
 }
 export function getAdjective(ratio: number) {
-  return getWordOfPosType(ratio, adjectiveSymbols);
+	return getWordOfPosType(ratio, adjectiveSymbols);
 }

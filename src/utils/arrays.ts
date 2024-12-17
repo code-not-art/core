@@ -1,5 +1,5 @@
 export function array(length: number) {
-  return Array.from({ length: length }, (_v, k) => k);
+	return Array.from({ length: length }, (_v, k) => k);
 }
 /**
  * Return an array of numbers from 0 to 1, with a number of evenly spaced steps.
@@ -13,10 +13,10 @@ export function array(length: number) {
  * @returns
  */
 export function ratioArray(steps: number) {
-  if (steps < 2) {
-    return range(0, 1, 1);
-  }
-  return range(0, 1, 1 / steps);
+	if (steps < 2) {
+		return range(0, 1, 1);
+	}
+	return range(0, 1, 1 / steps);
 }
 /**
  * Create an array, inclusive of the endpoints specified, with every value from the start to the end.
@@ -34,23 +34,18 @@ export function ratioArray(steps: number) {
  * @returns
  */
 export function range(start: number, end: number, step = 1) {
-  return array(Math.floor((end - start) / step) + 1).map(
-    (i) => i * step + start,
-  );
+	return array(Math.floor((end - start) / step) + 1).map((i) => i * step + start);
 }
 export function sequence<T>(count: number, method: (i: number) => T): T[] {
-  return array(count).map((i) => method(i));
+	return array(count).map((i) => method(i));
 }
-export function repeat(
-  count: number,
-  action: (index: number, stopLoop: () => void) => void,
-): void {
-  for (let i = 0; i < count; i++) {
-    let stopRequested = false;
-    const stopLoop = () => (stopRequested = true);
-    action(i, stopLoop);
-    if (stopRequested) {
-      break;
-    }
-  }
+export function repeat(count: number, action: (index: number, stopLoop: () => void) => void): void {
+	for (let i = 0; i < count; i++) {
+		let stopRequested = false;
+		const stopLoop = () => (stopRequested = true);
+		action(i, stopLoop);
+		if (stopRequested) {
+			break;
+		}
+	}
 }
