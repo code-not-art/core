@@ -88,7 +88,15 @@ type DottedLineBrushConfig = {
 /**
  * Brush to draw dots along the length of the path.
  *
- * Dots will be radius 15 black circles spaced every 50 pixels.
+ * The fill, size, and spacing of the dots are configurable when the brush is created.
+ * Default config values, if not provided, are:
+ * ```
+ * {
+ *   fill: 'black',
+ *   radius: 15, // pixels
+ *   dotSpacing: 50, // pixels
+ * }
+ * ```
  */
 const dottedLineBrush: (config?: DottedLineBrushConfig) => Brush = (config) => (props) => {
 	const { draw, path } = props;
