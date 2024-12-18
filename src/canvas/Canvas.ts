@@ -131,7 +131,7 @@ export class Canvas {
 	fill = (fill: FillSelection) => {
 		const storedTransform = this.context.getTransform();
 		this.context.resetTransform();
-		this.draw.rect(
+		this.draw.rectangle(
 			{
 				corner: Vec2.origin(),
 				height: this.get.height(),

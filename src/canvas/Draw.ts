@@ -107,8 +107,8 @@ export class Draw {
 		styles.brush && styles.brush({ path: Path.fromCircle(circle), draw: this });
 	}
 
-	// TODO: Expand rect to also handle rounded corners. Probably want to take advantage of Path API once written.
-	rect(rectangleConfig: Rectangle | RectangleConfig, styles: Styles) {
+	// TODO: Expand rectangle to also handle rounded corners. Probably want to take advantage of Path API once written.
+	rectangle(rectangleConfig: Rectangle | RectangleConfig, styles: Styles) {
 		const rectangle = Rectangle(rectangleConfig);
 		// Map all corners except the start
 		const corners = [
@@ -125,7 +125,7 @@ export class Draw {
 		});
 		this.context.closePath();
 		this.draw(styles.stroke, styles.fill);
-		styles.brush && styles.brush({ path: Path.fromRect(rectangleConfig), draw: this });
+		styles.brush && styles.brush({ path: Path.fromRectangle(rectangleConfig), draw: this });
 	}
 
 	line(line: Line, styles: Styles) {

@@ -241,7 +241,7 @@ export class Path {
 		return new Path(line.start).line(line.end);
 	}
 
-	static fromRect(config: RectangleConfig): Path {
+	static fromRectangle(config: RectangleConfig): Path {
 		const rectangle = Rectangle(config);
 		const corners = [
 			new Vec2(rectangle.max.x, rectangle.min.y),
