@@ -1,54 +1,51 @@
 {
-  "name": "@code-not-art/core",
-  "version": "2.0.0-beta.1",
-  "description": "HTML 5 Canvas Drawing Library",
-  "type": "module",
-  "exports": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
-  "files": [
-    "dist",
-    "README.md",
-    "LICENSE"
-  ],
-  "scripts": {
-    "build": "tsc"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/code-not-art/core.git"
-  },
-  "keywords": [
-    "canvas",
-    "generative",
-    "art",
-    "TypeScript",
-    "makecodenotart",
-    "codenotart",
-    "codeart"
-  ],
-  "author": "Jon Eubank <joneubank@gmail.com>",
-  "license": "GPL-3.0-or-later",
-  "bugs": {
-    "url": "https://github.com/code-not-art/core/issues"
-  },
-  "homepage": "https://github.com/code-not-art/core#readme",
-  "devDependencies": {
-    "@types/bezier-js": "^4.1.3",
-    "@types/node": "^16.7.1",
-    "@types/seed-random": "^2.2.1",
-    "@types/tinycolor2": "^1.4.3",
-    "@types/wink-pos-tagger": "^2.2.6",
-    "ts-node": "^10.2.1",
-    "typescript": "^4.3.5"
-  },
-  "dependencies": {
-    "a-set-of-english-words": "^1.0.0",
-    "bezier-js": "^6.1.4",
-    "fractal-noise": "^1.2.0",
-    "lodash": "^4.17.21",
-    "open-simplex-noise": "^2.5.0",
-    "seed-random": "^2.2.0",
-    "tinycolor2": "^1.4.2",
-    "wink-pos-tagger": "^2.2.2"
-  }
+	"name": "@code-not-art/core",
+	"version": "2.0.0-beta.1",
+	"description": "HTML 5 Canvas Drawing Library",
+	"type": "module",
+	"exports": "./dist/index.js",
+	"typings": "./dist/index.d.ts",
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
+	"scripts": {
+		"build": "tsc"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/code-not-art/core.git"
+	},
+	"keywords": [
+		"canvas",
+		"generative",
+		"art",
+		"TypeScript",
+		"makecodenotart",
+		"codenotart",
+		"codeart"
+	],
+	"author": "Jon Eubank <joneubank@gmail.com>",
+	"license": "GPL-3.0-or-later",
+	"bugs": {
+		"url": "https://github.com/code-not-art/core/issues"
+	},
+	"homepage": "https://github.com/code-not-art/core#readme",
+	"devDependencies": {
+		"@types/bezier-js": "^4.1.3",
+		"@types/node": "^16.7.1",
+		"@types/seed-random": "^2.2.1",
+		"@types/tinycolor2": "^1.4.3",
+		"ts-node": "^10.2.1",
+		"typescript": "^4.3.5"
+	},
+	"dependencies": {
+		"bezier-js": "^6.1.4",
+		"fractal-noise": "^1.2.0",
+		"lodash": "^4.17.21",
+		"open-simplex-noise": "^2.5.0",
+		"seed-random": "^2.2.0",
+		"tinycolor2": "^1.4.2"
+	}
 }

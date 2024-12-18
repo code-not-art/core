@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      a-set-of-english-words:
-        specifier: ^1.0.0
-        version: 1.0.0
       bezier-js:
         specifier: ^6.1.4
         version: 6.1.4
@@ -29,9 +26,6 @@ importers:
       tinycolor2:
         specifier: ^1.4.2
         version: 1.6.0
-      wink-pos-tagger:
-        specifier: ^2.2.2
-        version: 2.2.2
     devDependencies:
       '@types/bezier-js':
         specifier: ^4.1.3
@@ -45,9 +39,6 @@ importers:
       '@types/tinycolor2':
         specifier: ^1.4.3
         version: 1.4.6
-      '@types/wink-pos-tagger':
-        specifier: ^2.2.6
-        version: 2.2.6
       ts-node:
         specifier: ^10.2.1
         version: 10.9.2(@types/node@16.18.69)(typescript@4.9.5)
@@ -95,15 +86,6 @@ packages:
   '@types/tinycolor2@1.4.6':
     resolution: {integrity: sha512-iEN8J0BoMnsWBqjVbWH/c0G0Hh7O21lpR2/+PrvAVgWdzL7eexIFm4JN/Wn10PTcmNdtS6U67r499mlWMXOxNw==}
 
-  '@types/wink-pos-tagger@2.2.6':
-    resolution: {integrity: sha512-KWDONU9YjbYM61Xh2spF1espHRP31BgHocT3uXm1JWQaHik8IXeim3PpUBRKztVd9pyKDSnvmfqMEVAZsvSYCQ==}
-
-  '@types/wink-tokenizer@4.0.6':
-    resolution: {integrity: sha512-FSQP7MwLDWgSkYw1sJMmN4SFBJt/W6bDaHy/quOG2aq5DOB/ilHfY4x3IsAhGUmA45y3H29tM0tbq0Ut1LD7/Q==}
-
-  a-set-of-english-words@1.0.0:
-    resolution: {integrity: sha512-Bif470MjWbHSIvJ1m5+hbNXOWRXOv44+QLW0JPwpXmejjpnNvWZ7INi7EHbAjPOfn80/93NnZmCJlv8JHWdgKg==}
-
   acorn-walk@8.3.1:
     resolution: {integrity: sha512-TgUZgYvqZprrl7YldZNoa9OciCAyZR+Ejm9eXzKCmjsF5IKp/wgQ7Z/ZpjpGTIUPwrHQIcYeI8qDh4PsEwxMbw==}
     engines: {node: '>=0.4.0'}
@@ -125,9 +107,6 @@ packages:
   diff@4.0.2:
     resolution: {integrity: sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==}
     engines: {node: '>=0.3.1'}
-
-  emoji-regex@9.2.2:
-    resolution: {integrity: sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg==}
 
   fractal-noise@1.2.0:
     resolution: {integrity: sha512-H1B2d45cSDSlIsy+dA5/kpiTsHG4EEGQCt9jlWXj8o4Hq0vMXQ4MEVYHJPTYU4ehaSe9NwX0j1VEMfWCcfS4UA==}
@@ -169,24 +148,6 @@ packages:
   v8-compile-cache-lib@3.0.1:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}
 
-  wink-helpers@2.0.0:
-    resolution: {integrity: sha512-I/ZzXrHcNRXuoeFJmp2vMVqDI6UCK02Tds1WP4kSGAmx520gjL1BObVzF7d2ps24tyHIly9ngdB2jwhlFUjPvg==}
-
-  wink-lemmatizer@3.0.4:
-    resolution: {integrity: sha512-EdLJfy1xLF2ze2cp9Z3qiEWjiq+V8ZVRWiWooCXTXR0AyPxY8ezm4E0puJ0yIj5szzED9tcXV2U7RboaGvboFw==}
-
-  wink-lexicon@2.2.0:
-    resolution: {integrity: sha512-QIuHS9r/HV6q3PCCz6pymg4gbsryW9wDk8CHdU+sDn0kJcHpECNDIcdY0Q/mZpqxtFLp9dzIw7pjcStLBbGZGg==}
-
-  wink-porter2-stemmer@2.0.1:
-    resolution: {integrity: sha512-0g+RkkqhRXFmSpJQStVXW5N/WsshWpJXsoDRW7DwVkGI2uDT6IBCoq3xdH5p6IHLaC6ygk7RWUsUx4alKxoagQ==}
-
-  wink-pos-tagger@2.2.2:
-    resolution: {integrity: sha512-+bhkwqwwChqWR75ksFKVJZQagwu404UmnvFjxr+OWZ02/ZJAv19N/iqDpMeYRQRxatk5N+W9pXIKEDJsVrzGyw==}
-
-  wink-tokenizer@5.3.0:
-    resolution: {integrity: sha512-O/yAw0g3FmSgeeQuYAJJfP7fVPB4A6ay0018qASh79aWmIOyPYy4j4r9EQT8xBjicja6lCLvgRVAybmEBaATQA==}
-
   yn@3.1.1:
     resolution: {integrity: sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==}
     engines: {node: '>=6'}
@@ -222,14 +183,6 @@ snapshots:
 
   '@types/tinycolor2@1.4.6': {}
 
-  '@types/wink-pos-tagger@2.2.6':
-    dependencies:
-      '@types/wink-tokenizer': 4.0.6
-
-  '@types/wink-tokenizer@4.0.6': {}
-
-  a-set-of-english-words@1.0.0: {}
-
   acorn-walk@8.3.1: {}
 
   acorn@8.11.3: {}
@@ -241,8 +194,6 @@ snapshots:
   create-require@1.1.1: {}
 
   diff@4.0.2: {}
-
-  emoji-regex@9.2.2: {}
 
   fractal-noise@1.2.0: {}
 
@@ -277,28 +228,5 @@ snapshots:
   typescript@4.9.5: {}
 
   v8-compile-cache-lib@3.0.1: {}
-
-  wink-helpers@2.0.0: {}
-
-  wink-lemmatizer@3.0.4:
-    dependencies:
-      wink-lexicon: 2.2.0
-      wink-porter2-stemmer: 2.0.1
-
-  wink-lexicon@2.2.0: {}
-
-  wink-porter2-stemmer@2.0.1: {}
-
-  wink-pos-tagger@2.2.2:
-    dependencies:
-      wink-helpers: 2.0.0
-      wink-lemmatizer: 3.0.4
-      wink-lexicon: 2.2.0
-      wink-porter2-stemmer: 2.0.1
-      wink-tokenizer: 5.3.0
-
-  wink-tokenizer@5.3.0:
-    dependencies:
-      emoji-regex: 9.2.2
 
   yn@3.1.1: {}

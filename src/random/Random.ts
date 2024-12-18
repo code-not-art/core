@@ -6,7 +6,7 @@ import { array, repeat } from '../utils/index.js';
 import Distribution from './Distribution.js';
 import { RandomContext } from './RandomContext.js';
 import { Uniform } from './distributions/index.js';
-import * as Words from './words/index.js';
+import { words } from './words/index.js';
 
 export class Random {
 	_contexts: RandomContext[] = [];
@@ -181,18 +181,8 @@ export class Random {
 		this.pop();
 	}
 
-	word(type?: 'noun' | 'adjective' | 'adverb') {
-		switch (type) {
-			case 'noun':
-				return Words.getNoun(this.next());
-			case 'adjective':
-				return Words.getAdjective(this.next());
-			case 'adverb':
-				return Words.getAdverb(this.next());
-			default:
-				return Words.getWord(this.next());
-				break;
-		}
+	word() {
+		return this.chooseOne(words);
 	}
 
 	fuzzy(base: number, distribution?: Distribution) {
