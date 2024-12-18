@@ -1,6 +1,6 @@
 # Brush
 
-Every canvas draw function takes two arguments: first the shape or structure that defines where to draw on teh canvas, and second is the styles to apply to that location. HTML canvas provides some simple line (stroke) and fill properties that all draw functions expose. 
+Every canvas draw function takes two arguments: first the shape or structure that defines where to draw on the canvas, and second is the styles to apply to that location. HTML canvas provides some simple line (stroke) and fill properties that all draw functions expose. 
 
 In addition to these default style settings, every draw function can also be provided a `Brush`. The purpose of a brush is to combine multiple canvas drawing actions into a single function, so that when the Brush is used to draw a shape or path, a series of effects can be applied on the canvas at that location.
 
